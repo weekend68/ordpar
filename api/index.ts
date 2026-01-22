@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import express from 'express';
 import cors from 'cors';
 import wordSetsRouter from '../backend/src/routes/wordsets.js';
@@ -21,4 +22,6 @@ app.get('/api/health', (req, res) => {
 });
 
 // Export for Vercel serverless
-export default app;
+export default async (req: VercelRequest, res: VercelResponse) => {
+  return app(req as any, res as any);
+};
