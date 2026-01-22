@@ -12,7 +12,7 @@ export async function validateWordSet(
 ): Promise<ValidationResult> {
 
   // Load prompt template
-  const promptPath = path.join(__dirname, '../../../prompts/validator.txt');
+  const promptPath = path.join(__dirname, '../../prompts/validator.txt');
   const promptTemplate = await fs.readFile(promptPath, 'utf-8');
 
   // Fill in the generated groups

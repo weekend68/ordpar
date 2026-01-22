@@ -14,7 +14,7 @@ export async function generateWordSet(
 ): Promise<GeneratedWordSet> {
 
   // Load prompt template
-  const promptPath = path.join(__dirname, '../../../prompts/generator.txt');
+  const promptPath = path.join(__dirname, '../../prompts/generator.txt');
   const promptTemplate = await fs.readFile(promptPath, 'utf-8');
 
   // Fill in variables

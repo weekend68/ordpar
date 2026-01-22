@@ -2,12 +2,16 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import wordSetsRouter from './routes/wordsets.js';
-import gamesRouter from './routes/games.js';
-import pairsRouter from './routes/pairs.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import wordSetsRouter from './_lib/routes/wordsets.js';
+import gamesRouter from './_lib/routes/games.js';
+import pairsRouter from './_lib/routes/pairs.js';
 
 // Load env from backend/.env
-dotenv.config({ path: '../backend/.env' });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '../backend/.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3001;
