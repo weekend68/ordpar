@@ -8,9 +8,7 @@ interface GameResultProps {
 }
 
 export function GameResult({
-  status,
   groups,
-  completedGroups,
   onPlayAgain,
 }: GameResultProps) {
   return (
