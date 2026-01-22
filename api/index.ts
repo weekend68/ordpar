@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import express from 'express';
 import cors from 'cors';
-import wordSetsRouter from '../backend/src/routes/wordsets.js';
-import gamesRouter from '../backend/src/routes/games.js';
-import pairsRouter from '../backend/src/routes/pairs.js';
+import wordSetsRouter from './routes/wordsets.js';
+import gamesRouter from './routes/games.js';
+import pairsRouter from './routes/pairs.js';
 
 const app = express();
 
