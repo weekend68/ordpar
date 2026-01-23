@@ -1,5 +1,3 @@
-import { getFontSize } from '../utils/fontSizer';
-
 interface WordCardProps {
   word: string;
   isRevealed: boolean;
@@ -17,8 +15,6 @@ export function WordCard({
   isShaking,
   onClick,
 }: WordCardProps) {
-  const fontSizeClass = getFontSize(word);
-
   return (
     <div
       onClick={onClick}
@@ -36,7 +32,7 @@ export function WordCard({
       `}
     >
       <span
-        className={`${isSelected ? 'font-bold' : 'font-semibold'} text-center text-sm`}
+        className={`${isSelected ? 'font-bold' : 'font-semibold'} text-center text-[15px]`}
       >
         {isRevealed ? word : '???'}
       </span>
