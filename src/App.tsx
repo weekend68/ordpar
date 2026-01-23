@@ -66,7 +66,7 @@ function App() {
     );
   }
 
-  const { state, toggleWordSelection, guessGroup, passTurn, clearSelection, resetGame } =
+  const { state, toggleWordSelection, guessGroup, passTurn, clearSelection } =
     useGameState(wordSet);
 
   const handlePlayAgain = useCallback(() => {
