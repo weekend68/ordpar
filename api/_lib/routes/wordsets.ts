@@ -1,6 +1,5 @@
 import express from 'express';
-import { generateValidatedWordSet } from '../services/ai/orchestrator.js';
-import { saveWordSet, getRandomWordSet } from '../services/supabase/wordSets.js';
+import { getRandomWordSet } from '../services/supabase/wordSets.js';
 import { DifficultyProfile } from '../types.js';
 
 const router = express.Router();
@@ -40,16 +39,30 @@ router.post('/generate', async (req, res) => {
       groups = cached.groups;
       wordSetId = cached.id;
     } else {
-      console.log(`🎲 No cache, generating new word set...`);
-      // Generate word set (slow, 10-20s)
-      groups = await generateValidatedWordSet(
-        difficulty_level,
-        profile,
-        bad_patterns
-      );
+      console.log(`🚂 No cache, calling Railway AI service...`);
+      // Call Railway for generation (no timeout limit)
+      const railwayUrl = process.env.RAILWAY_AI_URL || 'http://localhost:3002';
+      const response = await fetch(`${railwayUrl}/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          difficulty_level,
+          player_profile: profile,
+          bad_patterns
+        })
+      });
 
-      // Save to database
-      wordSetId = await saveWordSet(difficulty_level, groups);
+      if (!response.ok) {
+        throw new Error(`Railway AI service error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.error || 'Railway generation failed');
+      }
+
+      groups = data.word_set.groups;
+      wordSetId = data.word_set.id;
     }
 
     res.json({

@@ -9,7 +9,7 @@ export async function generateValidatedWordSet(
   badPatterns: string[] = []
 ): Promise<WordGroup[]> {
 
-  const maxAttempts = 2; // Reduced for Vercel timeout
+  const maxAttempts = 5; // Railway has no timeout
   let attempts = 0;
 
   while (attempts < maxAttempts) {
@@ -36,20 +36,19 @@ export async function generateValidatedWordSet(
           console.log(`   Retrying...`);
           continue;
         } else {
-          throw new Error('Failed to generate valid word set after 2 attempts');
+          throw new Error('Failed to generate valid word set after 5 attempts');
         }
       }
 
-      // Accept acceptable quality or better (not just good/excellent)
       if (validation.overall_quality === 'poor') {
         console.log(`❌ Quality too low: ${validation.overall_quality}`);
 
         if (attempts < maxAttempts) {
           console.log(`   Retrying...`);
           continue;
+        } else {
+          throw new Error('Failed to generate good quality word set after 5 attempts');
         }
-        // On last attempt, accept if valid even if quality is poor
-        console.log(`⚠️  Accepting poor quality on last attempt (valid: ${validation.valid})`);
       }
 
       // Step 4: Select best 4 from 6
