@@ -65,29 +65,41 @@ export async function getWordSet(id: string): Promise<WordSetRecord | null> {
 
 /**
  * Get a random word set from cache (for quick serving, no user tracking)
+ * Prefers newer AI-generated sets over older DN imports
  */
 export async function getRandomWordSet(): Promise<WordSetRecord | null> {
   const supabase = getSupabaseClient();
 
-  // Get 10 least-used word sets, then pick one randomly
-  const { data, error } = await supabase
+  // Get 20 newest word sets (AI-generated), favor them 70% of the time
+  const { data: newest, error: newestError } = await supabase
+    .from('word_sets')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  // Get 10 least-used word sets (mix of DN and AI)
+  const { data: leastUsed, error: leastUsedError } = await supabase
     .from('word_sets')
     .select('*')
     .order('times_used', { ascending: true })
     .limit(10);
 
-  if (error) {
-    console.error('❌ Failed to get random word set:', error);
+  if ((newestError || !newest || newest.length === 0) &&
+      (leastUsedError || !leastUsed || leastUsed.length === 0)) {
+    console.error('❌ Failed to get word sets');
     return null;
   }
 
-  if (!data || data.length === 0) {
+  // 70% chance to use newest (AI-generated), 30% chance for least-used (DN mix)
+  const useNewest = Math.random() < 0.7 && newest && newest.length > 0;
+  const pool = useNewest ? newest : leastUsed;
+
+  if (!pool || pool.length === 0) {
     return null;
   }
 
-  // Pick a random one from the least-used sets
-  const randomIndex = Math.floor(Math.random() * data.length);
-  return data[randomIndex];
+  const randomIndex = Math.floor(Math.random() * pool.length);
+  return pool[randomIndex];
 }
 
 /**
