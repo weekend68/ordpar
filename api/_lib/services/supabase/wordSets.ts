@@ -65,41 +65,34 @@ export async function getWordSet(id: string): Promise<WordSetRecord | null> {
 
 /**
  * Get a random word set from cache (for quick serving, no user tracking)
- * Prefers newer AI-generated sets over older DN imports
+ * Only returns AI-generated word sets (created today), no DN imports
  */
 export async function getRandomWordSet(): Promise<WordSetRecord | null> {
   const supabase = getSupabaseClient();
 
-  // Get 20 newest word sets (AI-generated), favor them 70% of the time
-  const { data: newest, error: newestError } = await supabase
+  // Only get AI-generated word sets from today (2026-01-23 15:00 onwards)
+  const aiGenerationStartDate = '2026-01-23T15:00:00Z';
+
+  const { data, error } = await supabase
     .from('word_sets')
     .select('*')
-    .order('created_at', { ascending: false })
+    .gte('created_at', aiGenerationStartDate)
+    .order('times_used', { ascending: true })
     .limit(20);
 
-  // Get 10 least-used word sets (mix of DN and AI)
-  const { data: leastUsed, error: leastUsedError } = await supabase
-    .from('word_sets')
-    .select('*')
-    .order('times_used', { ascending: true })
-    .limit(10);
-
-  if ((newestError || !newest || newest.length === 0) &&
-      (leastUsedError || !leastUsed || leastUsed.length === 0)) {
-    console.error('❌ Failed to get word sets');
+  if (error) {
+    console.error('❌ Failed to get AI word sets:', error);
     return null;
   }
 
-  // 70% chance to use newest (AI-generated), 30% chance for least-used (DN mix)
-  const useNewest = Math.random() < 0.7 && newest && newest.length > 0;
-  const pool = useNewest ? newest : leastUsed;
-
-  if (!pool || pool.length === 0) {
+  if (!data || data.length === 0) {
+    console.log('⚠️ No AI word sets available, need to generate new ones');
     return null;
   }
 
-  const randomIndex = Math.floor(Math.random() * pool.length);
-  return pool[randomIndex];
+  // Pick a random one from the least-used AI sets
+  const randomIndex = Math.floor(Math.random() * data.length);
+  return data[randomIndex];
 }
 
 /**
