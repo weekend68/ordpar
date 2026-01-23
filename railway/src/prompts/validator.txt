@@ -33,6 +33,16 @@ Analysera ordgrupperna och leta efter följande problem:
 7. KVALITETSBEDÖMNING PER GRUPP
    - Är kopplingen elegant och tillfredsställande att hitta?
    - Eller känns den konstruerad/tvingad?
+   
+8. Djävulens advokat-test
+   - Läs varje ord i gruppen och fråga dig: 'Vad är den mest uppenbara betydelsen av det här ordet?'. Om kopplingen bygger på en dold betydelse (som EN = träd), är de andra orden i gruppen tillräckligt starka för att tvinga fram den tolkningen?
+
+9 Baklänges-test
+   - Om en kategori handlar om att läsa ord baklänges eller anagram, måste du faktiskt simulera att du skriver ordet baklänges bokstav för bokstav och kontrollera att resultatet är ett riktigt svenskt ord.
+
+10. Dubbeltydighet: 
+   - Kontrollera om ett ord i en 'enkel' grupp råkar passa perfekt i en 'svår' grupp. Detta är det vanligaste felet som gör spelet frustrerande.
+
 
 OUTPUT-FORMAT:
 Returnera ENDAST JSON i följande format:

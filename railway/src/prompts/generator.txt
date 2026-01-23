@@ -14,10 +14,13 @@ FEEDBACK FRÅN TIDIGARE SPELARE:
 KRITISKA REGLER:
 1. Max 15 tecken per ord (viktigt för mobilvisning)
 2. Inget ord får passa i flera grupper
-3. Alla ord ska vara vanliga svenska ord (inga extremt ovanliga ord)
+3. Alla ord ska vara vedertagna svenska ord i SAOL-standard (men undvik de allra mest obskyra). Inga förkortningar eller avhuggna ordstammar (t.ex. inte 'VANDR' för 'Vandring')
 4. Kopplingen ska vara logisk och begriplig när man ser facit
 5. Undvik godtyckliga listor utan tydlig koppling
 6. Undvik långsökta associationer
+- Tänk på svenska, inte engelska. Skapa inte kategorier som bygger på engelska ord (t.ex. POOL/LOOP) om det inte explicit efterfrågas.
+- Du är extremt noggrann med stavning. Dubbelkolla egennamn (t.ex. PIPPI, inte PIPPA) och sammansatta ord (KANELLBULLAR, inte KANELL BULLAR).
+- Orden i en grupp bör om möjligt ha samma ordklass och form (t.ex. alla i plural eller alla i grundform).
 
 RATING-SYSTEM (lär dig från feedbacken ovan):
 
