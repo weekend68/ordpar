@@ -70,9 +70,9 @@ function App() {
     useGameState(wordSet);
 
   const handlePlayAgain = useCallback(() => {
+    // Just load new word set - useGameState will auto-initialize with new wordSet
     loadNewWordSet();
-    resetGame();
-  }, [loadNewWordSet, resetGame]);
+  }, [loadNewWordSet]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">

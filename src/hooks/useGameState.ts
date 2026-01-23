@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { GameState, WordSet } from '../types';
 
 function initGame(wordSet: WordSet): GameState {
@@ -17,6 +17,12 @@ function initGame(wordSet: WordSet): GameState {
 
 export function useGameState(wordSet: WordSet) {
   const [state, setState] = useState<GameState>(() => initGame(wordSet));
+
+  // Reset game state when wordSet changes (new game loaded)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setState(initGame(wordSet));
+  }, [wordSet.id]); // Only depend on ID to avoid unnecessary resets
 
   const toggleWordSelection = useCallback((word: string) => {
     setState((prev) => {
