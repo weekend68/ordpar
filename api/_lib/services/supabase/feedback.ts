@@ -39,6 +39,24 @@ export async function submitGroupFeedback(
     throw new Error('Word set not found');
   }
 
+  // Insert all ratings into group_feedback table
+  const feedbackRecords = ratings.map((r) => ({
+    word_set_id: wordSetId,
+    group_index: r.group_index,
+    rating: r.rating,
+  }));
+
+  const { error: insertError } = await supabase
+    .from('group_feedback')
+    .insert(feedbackRecords);
+
+  if (insertError) {
+    console.error('Failed to insert group feedback:', insertError);
+    throw new Error(`Failed to save feedback: ${insertError.message}`);
+  }
+
+  console.log(`💾 Saved ${ratings.length} group ratings to database`);
+
   // Process bad ratings - add to bad_groups table
   const badRatings = ratings.filter((r) => r.rating === 'bad');
   for (const feedback of badRatings) {
@@ -77,12 +95,12 @@ export async function submitGroupFeedback(
     }
   }
 
-  // Calculate average quality score from all ratings
+  // Calculate average quality score from all ratings for this submission
   if (ratings.length > 0) {
     const totalScore = ratings.reduce((sum, r) => sum + ratingToScore(r.rating), 0);
     const avgScore = totalScore / ratings.length;
 
-    // Update word set quality score
+    // Update word set quality score (we could also calculate from all group_feedback, but this is simpler)
     await supabase
       .from('word_sets')
       .update({
