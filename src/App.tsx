@@ -52,6 +52,11 @@ function App() {
   const { state, toggleWordSelection, guessGroup, passTurn, clearSelection } =
     useGameState(wordSet || dummyWordSet);
 
+  // ALL hooks must be before conditional returns - Rules of Hooks
+  const handlePlayAgain = useCallback(() => {
+    loadNewWordSet();
+  }, [loadNewWordSet]);
+
   // Show loading screen
   if (isLoading) {
     return <LoadingScreen />;
@@ -75,11 +80,6 @@ function App() {
       </div>
     );
   }
-
-  const handlePlayAgain = useCallback(() => {
-    // Just load new word set - useGameState will auto-initialize with new wordSet
-    loadNewWordSet();
-  }, [loadNewWordSet]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
