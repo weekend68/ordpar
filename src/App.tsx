@@ -37,10 +37,11 @@ function App() {
     }
   }, []);
 
-  // Load initial word set on mount
+  // Load initial word set on mount only once
   useEffect(() => {
     loadNewWordSet();
-  }, [loadNewWordSet]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty deps - only run once on mount
 
   // Show loading screen
   if (isLoading) {
