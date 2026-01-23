@@ -17,6 +17,7 @@ interface GenerateWordSetResponse {
   word_set?: {
     id: string;
     groups: WordGroup[];
+    source?: 'gemini' | 'dn' | 'claude' | null;
     created_at: string;
   };
   error?: string;
@@ -24,7 +25,7 @@ interface GenerateWordSetResponse {
 
 export async function generateWordSet(
   request: GenerateWordSetRequest = {}
-): Promise<{ id: string; groups: WordGroup[] }> {
+): Promise<{ id: string; groups: WordGroup[]; source?: 'gemini' | 'dn' | 'claude' | null }> {
   const url = `${API_URL}/wordsets/generate`;
   console.log('🌐 Fetching from:', url);
 
@@ -52,6 +53,7 @@ export async function generateWordSet(
     return {
       id: data.word_set.id,
       groups: data.word_set.groups,
+      source: data.word_set.source,
     };
   } catch (error) {
     console.error('🚨 Fetch error:', error);

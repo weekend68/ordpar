@@ -10,6 +10,7 @@ interface RailwayResponse {
     groups: WordGroup[];
     difficulty_level: string;
     created_at: string;
+    source?: 'gemini' | 'dn' | 'claude' | null;
   };
   error?: string;
 }
@@ -41,11 +42,13 @@ router.post('/generate', async (req, res) => {
 
     let groups;
     let wordSetId;
+    let source: 'gemini' | 'dn' | 'claude' | null = null;
 
     if (cached) {
       console.log(`💾 Using cached word set: ${cached.id}`);
       groups = cached.groups;
       wordSetId = cached.id;
+      source = cached.source || null;
     } else {
       console.log(`🚂 No cache, calling Railway AI service...`);
 
@@ -77,6 +80,7 @@ router.post('/generate', async (req, res) => {
 
       groups = data.word_set.groups;
       wordSetId = data.word_set.id;
+      source = data.word_set.source || 'gemini'; // Default to gemini for new AI generations
     }
 
     res.json({
@@ -84,6 +88,7 @@ router.post('/generate', async (req, res) => {
       word_set: {
         id: wordSetId,
         groups,
+        source,
         created_at: new Date().toISOString()
       }
     });

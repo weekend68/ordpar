@@ -9,6 +9,7 @@ import { WordSet } from './types';
 
 function App() {
   const [wordSet, setWordSet] = useState<WordSet | null>(null);
+  const [source, setSource] = useState<'gemini' | 'dn' | 'claude' | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -20,7 +21,7 @@ function App() {
 
     try {
       console.log('🎲 Requesting new word set from backend...');
-      const { id, groups } = await generateWordSet({});
+      const { id, groups, source: wordSetSource } = await generateWordSet({});
 
       const newWordSet: WordSet = {
         id,
@@ -29,6 +30,7 @@ function App() {
 
       console.log('✅ Received word set:', newWordSet);
       setWordSet(newWordSet);
+      setSource(wordSetSource || null);
     } catch (err) {
       console.error('❌ Failed to load word set:', err);
       setError(err instanceof Error ? err.message : 'Failed to load word set');
@@ -102,13 +104,14 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+    <div className="min-h-screen bg-gray-950 py-8">
       <GameBoard
         state={state}
         onWordClick={toggleWordSelection}
         onGuess={guessGroup}
         onPass={passTurn}
         onClear={clearSelection}
+        source={source}
       />
 
       {state.status === 'won' && !showFeedback && (

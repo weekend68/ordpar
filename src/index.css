@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile optimization - remove 300ms click delay and disable highlights */
+* {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 @layer utilities {
   @keyframes shake {
     0%, 100% {

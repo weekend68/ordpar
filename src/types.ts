@@ -25,3 +25,14 @@ export interface GameState {
   // Animation
   shakingWords: Set<string>;
 }
+
+// Multiplayer-specific state extension
+export interface MultiplayerGameState extends GameState {
+  sessionId: string;
+  sessionCode: string;
+  localPlayerNumber: 1 | 2;
+  isMyTurn: boolean;
+  opponentConnected: boolean;
+  winner: 1 | 2 | null;
+  lastActivity: Date;
+}

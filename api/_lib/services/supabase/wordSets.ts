@@ -10,6 +10,7 @@ export interface WordSetRecord {
   used_by_users: string[];
   avg_completion_rate: number | null;
   created_at: string;
+  source?: 'gemini' | 'dn' | 'claude' | null;
 }
 
 /**

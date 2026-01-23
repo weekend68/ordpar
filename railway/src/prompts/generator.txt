@@ -42,13 +42,13 @@ RATING-SYSTEM (lär dig från feedbacken ovan):
 ✗ Inga utmaningar alls
 
 ❌ BAD (undvik helt - 0 av 6):
-✗ Långsökta dolda ord: "Innehåller motorfordon" (SIFFERKOMBINATION har COMB?!)
-✗ Långsökta grundämnen: "Här finns ett grundämne" (NIKOLA TESLA = Ni)
-✗ Godtyckliga bokstavsregler: "Kvinnonamn om första tas bort" (FLISA→LISA)
+✗ Långsökta dolda ord: "Innehåller motorfordon" (SIFFERKOMBINATION har KOMBI)
+✗ Långsökta grundämnen: "Här finns ett grundämne" (NIKOLA TESLA = KOL)
+✗ Godtyckliga bokstavsregler: "Kvinnonamn om första tas bort" (FLISA → LISA)
 ✗ Obskyra kunskapskrav: "Invånare i bikupan" (expertkunskap om bin)
 ✗ Ord över 15 tecken: MICKE "SYD" ANDERSSON
 ✗ Baklänges-ord som blir ovanliga: ATOM→MOTA, KRUT→TURK (ingen tänker på MOTA eller TURK)
-✗ För abstrakta/otydliga: "Hugget i sten", "Kan bar betyda"
+✗ För abstrakta/otydliga
 
 MÅL FÖR VARJE SET:
 - 2 grupper ska vara 🔥 excellent (kreativa, eleganta, "aha!")
