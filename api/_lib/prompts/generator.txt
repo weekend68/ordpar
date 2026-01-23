@@ -5,33 +5,62 @@ KONTEXT:
 - Två spelare ser alla ord och turas om att välja ord
 - De ska hitta logiska kopplingar mellan ord
 
-SVÅRIGHETSGRAD: {difficulty_level}
-(LÄTT / MEDEL / SVÅR)
-
 SPELAR-PROFIL:
 {player_profile}
 
-TIDIGARE DÅLIGA MÖNSTER ATT UNDVIKA:
-{bad_patterns}
+FEEDBACK FRÅN TIDIGARE SPELARE:
+{feedback}
 
 KRITISKA REGLER:
-1. Max 12 tecken per ord (viktigt för mobilvisning)
+1. Max 15 tecken per ord (viktigt för mobilvisning)
 2. Inget ord får passa i flera grupper
 3. Alla ord ska vara vanliga svenska ord (inga extremt ovanliga ord)
 4. Kopplingen ska vara logisk och begriplig när man ser facit
 5. Undvik godtyckliga listor utan tydlig koppling
-6. Undvik långsökta associationer (som "JUNGLE = kung i djungeln")
+6. Undvik långsökta associationer
 
-VARIATION I SVÅRIGHETSGRAD (för de 6 grupperna):
-- 2 grupper: "Uppenbara" - Konkreta kategorier som är lätta att se
-- 2 grupper: "Tänkvärda" - Kräver viss eftertanke men är logiska
-- 2 grupper: "Knepiga" - Ordlekar, abstrakta kopplingar eller kulturella referenser
+RATING-SYSTEM (lär dig från feedbacken ovan):
+
+🔥 EXCELLENT (sikta på minst 2 av 6 grupper):
+✓ Kreativa ordlekar: "Både fågel och verb" (UGGLA, TÅRNA, RÅKA, SNÄPPA)
+✓ Eleganta abstrakta kopplingar: "Förknippas med hundra" (KOKPUNKT, JONAS JONASSON, USAIN BOLT, PROCENT)
+✓ Idiomatiska uttryck: "Kan man få enligt uttrycket" (KALLA FÖTTER, HJÄRNSLÄPP, BLODAD TAND, FNATT)
+✓ Kulturella referenser med twist: "Nummer tre i barnramsa" (DOFF, TRULL, LÅNGEMAN, PIRUM)
+✓ Baklänges-ord där BÅDA orden är vanliga: "Blir annat ord baklänges" (MIL→LIM, GOD→DOG, LÖP→PÖL, POOL→LOOP)
+✓ "Aha!"-känsla när man fattar kopplingen
+
+✅ GOOD (majoriteten - 3-4 av 6 grupper):
+✓ Lagom svårighet: "Klassiska drinkar" (MANHATTAN, COSMOPOLITAN, MIMOSA, MARGARITA)
+✓ Standard ordlekar: "Palindrom" (KAJAK, KIVIK, DVD), "-kaka" suffix (SOCKER, LÅR, KROPP, RIS)
+✓ Konkreta men inte uppenbara: "Viktenheter" (PUND, TON, UNS, CARAT)
+✓ Kända kulturella referenser: "I familjen Parnevik" (BOSSE, MIA, PEG, PENNY)
+✓ Kräver viss kunskap men är rimlig
+
+😴 TOO EASY (undvik dessa - max 1 av 6):
+✗ Triviala kategorier: "Schackpjäser" (alla känner till)
+✗ Uppenbart för målgruppen: "Sällskapsspel", "Kortspel"
+✗ Inga utmaningar alls
+
+❌ BAD (undvik helt - 0 av 6):
+✗ Långsökta dolda ord: "Innehåller motorfordon" (SIFFERKOMBINATION har COMB?!)
+✗ Långsökta grundämnen: "Här finns ett grundämne" (NIKOLA TESLA = Ni)
+✗ Godtyckliga bokstavsregler: "Kvinnonamn om första tas bort" (FLISA→LISA)
+✗ Obskyra kunskapskrav: "Invånare i bikupan" (expertkunskap om bin)
+✗ Ord över 15 tecken: MICKE "SYD" ANDERSSON
+✗ Baklänges-ord som blir ovanliga: ATOM→MOTA, KRUT→TURK (ingen tänker på MOTA eller TURK)
+✗ För abstrakta/otydliga: "Hugget i sten", "Kan bar betyda"
+
+MÅL FÖR VARJE SET:
+- 2 grupper ska vara 🔥 excellent (kreativa, eleganta, "aha!")
+- 3 grupper ska vara ✅ good (solid, logisk, rimlig)
+- MAX 1 grupp får vara 😴 too easy (enkel ingång)
+- 0 grupper får vara ❌ bad (undvik helt)
 
 TYP-VARIATION (minst):
-- 2 konkreta grupper (djur, föremål, platser, yrken, etc)
-- 1 abstrakt grupp (egenskaper, känslor, koncept)
-- 2 ordleks-grupper (sammansatta ord, rimmar på X, innehåller bokstav/ord, etc)
-- 1 kulturell/kontextuell grupp (kända personer, varumärken, filmer, etc)
+- 2 konkreta grupper (djur, föremål, platser, yrken - men inte uppenbara)
+- 1 abstrakt grupp (egenskaper, känslor, koncept - men elegant)
+- 2 ordleks-grupper (suffix/prefix, palindrom, baklänges MED vanliga ord, etc)
+- 1 kulturell/kontextuell grupp (kända personer, varumärken, sångtitlar, etc)
 
 OUTPUT-FORMAT:
 Returnera ENDAST JSON i följande format (ingen annan text):
@@ -39,18 +68,18 @@ Returnera ENDAST JSON i följande format (ingen annan text):
 {
   "groups": [
     {
-      "category": "Kan vara runda",
-      "words": ["BOLL", "MÅNE", "TALLRIK", "MYNT"],
-      "difficulty": "uppenbar",
-      "type": "konkret",
-      "explanation": "Alla dessa objekt kan ha rund form"
-    },
-    {
-      "category": "Innehåller väderstreck",
-      "words": ["NORRSKEN", "SYDPOL", "VÄSTRA", "ÖSTTYSKLAND"],
+      "category": "Både fågel och verb",
+      "words": ["UGGLA", "TÅRNA", "RÅKA", "SNÄPPA"],
       "difficulty": "knepig",
       "type": "ordlek",
-      "explanation": "Varje ord innehåller ett väderstreck: norr, syd, väst, öst"
+      "explanation": "Varje ord är både en fågel och ett verb i svenska språket"
+    },
+    {
+      "category": "Kan man få enligt uttrycket",
+      "words": ["KALLA FÖTTER", "HJÄRNSLÄPP", "BLODAD TAND", "FNATT"],
+      "difficulty": "lagom",
+      "type": "idiomatisk",
+      "explanation": "Vanliga svenska uttryck: få kalla fötter, få hjärnsläpp, etc"
     }
     // ... totalt 6 grupper
   ]
@@ -58,5 +87,7 @@ Returnera ENDAST JSON i följande format (ingen annan text):
 
 VIKTIGT:
 - Alla ord måste vara UNIKA (inget ord får förekomma i flera grupper)
-- Varje ord max 12 tecken
+- Varje ord max 15 tecken
 - Returnera ENDAST JSON, ingen markdown eller förklarande text
+- LÄR från feedbacken ovan - använd 🔥/✅ exemplen som inspiration
+- UNDVIK 😴/❌ mönstren helt

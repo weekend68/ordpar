@@ -11,7 +11,7 @@ Analysera ordgrupperna och leta efter följande problem:
    - Exempel: Om "BLÅ" finns i både "Färger" och "Börjar på B" är det ett problem
 
 2. ORDLÄNGD
-   - Finns ord som är längre än 12 tecken?
+   - Finns ord som är längre än 15 tecken?
    - Lista alla ord som bryter mot denna regel
 
 3. LÅNGSÖKTA KOPPLINGAR
@@ -65,7 +65,7 @@ BEDÖMNINGSKRITERIER:
 
 **valid: false** om:
 - Kritiska överlapp finns (ord i flera grupper)
-- Ord över 12 tecken
+- Ord över 15 tecken
 - Logiska fel (ord passar inte i sin grupp)
 
 **overall_quality:**

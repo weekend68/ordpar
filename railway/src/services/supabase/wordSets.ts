@@ -3,7 +3,6 @@ import { WordGroup } from '../../types.js';
 
 export interface WordSetRecord {
   id: string;
-  difficulty_level: 'LÄTT' | 'MEDEL' | 'SVÅR' | 'EXPERT';
   groups: WordGroup[];
   quality_score: number;
   times_used: number;
@@ -16,7 +15,6 @@ export interface WordSetRecord {
  * Save a generated word set to the database
  */
 export async function saveWordSet(
-  difficultyLevel: 'LÄTT' | 'MEDEL' | 'SVÅR' | 'EXPERT',
   groups: WordGroup[]
 ): Promise<string> {
   const supabase = getSupabaseClient();
@@ -24,7 +22,6 @@ export async function saveWordSet(
   const { data, error } = await supabase
     .from('word_sets')
     .insert({
-      difficulty_level: difficultyLevel,
       groups: groups,
       quality_score: 0,
       times_used: 0,
@@ -66,17 +63,14 @@ export async function getWordSet(id: string): Promise<WordSetRecord | null> {
 }
 
 /**
- * Get a random word set by difficulty (for quick serving, no user tracking)
+ * Get a random word set (for quick serving, no user tracking)
  */
-export async function getRandomWordSet(
-  difficultyLevel: 'LÄTT' | 'MEDEL' | 'SVÅR' | 'EXPERT'
-): Promise<WordSetRecord | null> {
+export async function getRandomWordSet(): Promise<WordSetRecord | null> {
   const supabase = getSupabaseClient();
 
   const { data, error } = await supabase
     .from('word_sets')
     .select('*')
-    .eq('difficulty_level', difficultyLevel)
     .order('times_used', { ascending: true })
     .limit(10)
     .maybeSingle();
@@ -93,15 +87,13 @@ export async function getRandomWordSet(
  * Find unused word sets for a specific user to avoid duplicates
  */
 export async function findUnusedWordSet(
-  userId: string,
-  difficultyLevel: 'LÄTT' | 'MEDEL' | 'SVÅR' | 'EXPERT'
+  userId: string
 ): Promise<WordSetRecord | null> {
   const supabase = getSupabaseClient();
 
   const { data, error } = await supabase
     .from('word_sets')
     .select('*')
-    .eq('difficulty_level', difficultyLevel)
     .not('used_by_users', 'cs', `{${userId}}`) // Not used by this user
     .order('quality_score', { ascending: false })
     .order('times_used', { ascending: true })

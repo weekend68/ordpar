@@ -8,28 +8,24 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export async function generateWordSet(
-  difficultyLevel: string,
   playerProfile: DifficultyProfile,
-  badPatterns: string[]
+  feedback: string = ''
 ): Promise<GeneratedWordSet> {
 
   // Load prompt template
   const promptPath = path.join(__dirname, '../../prompts/generator.txt');
   const promptTemplate = await fs.readFile(promptPath, 'utf-8');
 
-  // Format bad patterns for readability in prompt
-  const badPatternsFormatted = badPatterns.length > 0
-    ? badPatterns.map((pattern, i) => `${i + 1}. ${pattern}`).join('\n')
-    : 'Inga dåliga mönster rapporterade än.';
+  // Use feedback or default message
+  const feedbackSection = feedback || 'Ingen feedback än. Skapa intressanta grupper med variation i komplexitet.';
 
   // Fill in variables
   const prompt = promptTemplate
-    .replace('{difficulty_level}', difficultyLevel)
     .replace('{player_profile}', JSON.stringify(playerProfile, null, 2))
-    .replace('{bad_patterns}', badPatternsFormatted);
+    .replace('{feedback}', feedbackSection);
 
-  if (badPatterns.length > 0) {
-    console.log(`⚠️  AI will avoid ${badPatterns.length} bad patterns`);
+  if (feedback) {
+    console.log(`📊 AI learning from aggregated feedback`);
   }
 
   console.log('🤖 Generating word set with Claude...');

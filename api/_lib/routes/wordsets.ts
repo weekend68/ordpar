@@ -1,6 +1,6 @@
 import express from 'express';
 import { getRandomWordSet } from '../services/supabase/wordSets.js';
-import { getBadGroups, formatBadPatternsForAI } from '../services/supabase/badGroups.js';
+import { aggregateGroupFeedback, formatFeedbackForAI } from '../services/supabase/feedbackAggregator.js';
 import { DifficultyProfile, WordGroup } from '../types.js';
 
 interface RailwayResponse {
@@ -20,9 +20,7 @@ const router = express.Router();
 router.post('/generate', async (req, res) => {
   try {
     const {
-      difficulty_level = 'MEDEL',
-      player_profile,
-      bad_patterns = []
+      player_profile
     } = req.body;
 
     // Default profile if not provided
@@ -36,12 +34,10 @@ router.post('/generate', async (req, res) => {
     const profile = player_profile || defaultProfile;
 
     console.log(`\n📥 Received generate request:`);
-    console.log(`   Difficulty: ${difficulty_level}`);
     console.log(`   Profile:`, profile);
-    console.log(`   Bad patterns: ${bad_patterns.length}`);
 
     // Try to use cached word set first (fast, <1s)
-    const cached = await getRandomWordSet(difficulty_level);
+    const cached = await getRandomWordSet();
 
     let groups;
     let wordSetId;
@@ -53,11 +49,11 @@ router.post('/generate', async (req, res) => {
     } else {
       console.log(`🚂 No cache, calling Railway AI service...`);
 
-      // Get bad groups from database to avoid
-      const badGroups = await getBadGroups(1); // Min 1 report
-      const badPatterns = formatBadPatternsForAI(badGroups);
+      // Aggregate all feedback to send to AI
+      const aggregatedFeedback = await aggregateGroupFeedback();
+      const feedbackForPrompt = formatFeedbackForAI(aggregatedFeedback);
 
-      console.log(`📋 Sending ${badPatterns.length} bad patterns to AI`);
+      console.log(`📊 Sending aggregated feedback to AI (${aggregatedFeedback.excellent.length + aggregatedFeedback.good.length + aggregatedFeedback.too_easy.length + aggregatedFeedback.bad.length} examples)`);
 
       // Call Railway for generation (no timeout limit)
       const railwayUrl = process.env.RAILWAY_AI_URL || 'http://localhost:3002';
@@ -65,9 +61,8 @@ router.post('/generate', async (req, res) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          difficulty_level,
           player_profile: profile,
-          bad_patterns: badPatterns
+          feedback: feedbackForPrompt
         })
       });
 
@@ -89,7 +84,6 @@ router.post('/generate', async (req, res) => {
       word_set: {
         id: wordSetId,
         groups,
-        difficulty_level,
         created_at: new Date().toISOString()
       }
     });

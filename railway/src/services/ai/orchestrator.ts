@@ -4,9 +4,8 @@ import { selectBest4Groups } from './selector.js';
 import { DifficultyProfile, WordGroup } from '../../types.js';
 
 export async function generateValidatedWordSet(
-  difficultyLevel: 'LÄTT' | 'MEDEL' | 'SVÅR' | 'EXPERT',
   playerProfile: DifficultyProfile,
-  badPatterns: string[] = []
+  feedback: string = ''
 ): Promise<WordGroup[]> {
 
   const maxAttempts = 5; // Railway has no timeout
@@ -19,9 +18,8 @@ export async function generateValidatedWordSet(
     try {
       // Step 1: Generate 6 groups
       const generated = await generateWordSet(
-        difficultyLevel,
         playerProfile,
-        badPatterns
+        feedback
       );
 
       // Step 2: Validate

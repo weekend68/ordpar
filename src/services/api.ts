@@ -4,14 +4,12 @@ const API_URL = import.meta.env.VITE_API_URL ||
   (import.meta.env.PROD ? '/api' : 'http://localhost:3001/api');
 
 interface GenerateWordSetRequest {
-  difficulty_level?: 'LÄTT' | 'MEDEL' | 'SVÅR' | 'EXPERT';
   player_profile?: {
     ordförråd: 'lätt' | 'medel' | 'avancerat';
     ordlekar: 'undvik' | 'medel' | 'älskar';
     kulturella_referenser: 'kända' | 'medel' | 'obskyra';
     abstrakt_tänkande: 'konkret' | 'medel' | 'abstrakt';
   };
-  bad_patterns?: string[];
 }
 
 interface GenerateWordSetResponse {
@@ -19,7 +17,6 @@ interface GenerateWordSetResponse {
   word_set?: {
     id: string;
     groups: WordGroup[];
-    difficulty_level: string;
     created_at: string;
   };
   error?: string;

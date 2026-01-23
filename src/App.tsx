@@ -20,9 +20,7 @@ function App() {
 
     try {
       console.log('🎲 Requesting new word set from backend...');
-      const { id, groups } = await generateWordSet({
-        difficulty_level: 'MEDEL',
-      });
+      const { id, groups } = await generateWordSet({});
 
       const newWordSet: WordSet = {
         id,

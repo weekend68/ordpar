@@ -1,11 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { generateValidatedWordSet } from './services/ai/orchestrator.js';
 import { saveWordSet } from './services/supabase/wordSets.js';
 import type { DifficultyProfile } from './types.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from railway directory (one level up from dist)
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -22,9 +28,8 @@ app.get('/health', (req, res) => {
 app.post('/generate', async (req, res) => {
   try {
     const {
-      difficulty_level = 'MEDEL',
       player_profile,
-      bad_patterns = []
+      feedback = ''
     } = req.body;
 
     const defaultProfile: DifficultyProfile = {
@@ -37,26 +42,23 @@ app.post('/generate', async (req, res) => {
     const profile = player_profile || defaultProfile;
 
     console.log(`\n📥 AI Generation request:`);
-    console.log(`   Difficulty: ${difficulty_level}`);
     console.log(`   Profile:`, profile);
-    console.log(`   Bad patterns: ${bad_patterns.length}`);
+    console.log(`   Feedback: ${feedback ? 'Yes' : 'No feedback yet'}`);
 
     // Generate word set (can take 30-60s, no problem on Railway)
     const groups = await generateValidatedWordSet(
-      difficulty_level,
       profile,
-      bad_patterns
+      feedback
     );
 
     // Save to Supabase
-    const wordSetId = await saveWordSet(difficulty_level, groups);
+    const wordSetId = await saveWordSet(groups);
 
     res.json({
       success: true,
       word_set: {
         id: wordSetId,
         groups,
-        difficulty_level,
         created_at: new Date().toISOString()
       }
     });
