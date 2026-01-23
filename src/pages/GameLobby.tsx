@@ -177,9 +177,9 @@ export function GameLobby() {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Spel skapat!</h2>
               <p className="text-gray-600 mb-6">Dela denna kod med din motspelare</p>
 
-              <div className="bg-gray-800 border-2 border-blue-500 rounded-2xl p-8 mb-6">
-                <div className="text-xs text-gray-400 mb-3 uppercase tracking-wide">Session Code</div>
-                <div className="text-5xl font-mono font-bold text-white tracking-[0.3em]">
+              <div className="bg-gray-800 border-2 border-blue-500 rounded-2xl p-6 mb-6">
+                <div className="text-xs text-gray-400 mb-2 uppercase tracking-wide">Session Code</div>
+                <div className="text-3xl font-mono font-bold text-white tracking-[0.3em]">
                   {createdCode}
                 </div>
               </div>
@@ -247,7 +247,7 @@ export function GameLobby() {
                 onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
                 placeholder="XJ4K9P"
                 maxLength={6}
-                className="w-full text-center text-5xl font-mono font-bold tracking-[0.3em] py-6 px-6 bg-gray-800 border-2 border-gray-700 rounded-2xl focus:border-blue-500 focus:outline-none uppercase text-white placeholder:text-gray-600"
+                className="w-full text-center text-3xl font-mono font-bold tracking-[0.3em] py-4 px-4 bg-gray-800 border-2 border-gray-700 rounded-2xl focus:border-blue-500 focus:outline-none uppercase text-white placeholder:text-gray-600"
                 disabled={isLoading}
               />
 
