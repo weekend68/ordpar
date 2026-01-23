@@ -79,7 +79,7 @@ export async function getRandomWordSet(): Promise<WordSetRecord | null> {
     .select('*')
     .gte('created_at', aiGenerationStartDate)
     .order('times_used', { ascending: true })
-    .limit(20);
+    .limit(50); // Increased from 20 to 50 for more variety
 
   if (error) {
     console.error('❌ Failed to get AI word sets:', error);
@@ -93,7 +93,17 @@ export async function getRandomWordSet(): Promise<WordSetRecord | null> {
 
   // Pick a random one from the least-used AI sets
   const randomIndex = Math.floor(Math.random() * data.length);
-  return data[randomIndex];
+  const selectedSet = data[randomIndex];
+
+  // Increment times_used counter
+  await supabase
+    .from('word_sets')
+    .update({ times_used: selectedSet.times_used + 1 })
+    .eq('id', selectedSet.id);
+
+  console.log(`📊 Using word set ${selectedSet.id} (times_used: ${selectedSet.times_used} -> ${selectedSet.times_used + 1})`);
+
+  return selectedSet;
 }
 
 /**
