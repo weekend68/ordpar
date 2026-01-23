@@ -166,9 +166,9 @@ export function MultiplayerGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 pt-3">
-      {/* HUD - Instrumentpanel - compact */}
-      <div className="max-w-[430px] mx-auto px-3 mb-2">
+    <div className="min-h-screen bg-gray-950 pt-2">
+      {/* HUD - Instrumentpanel - ultra compact */}
+      <div className="max-w-[430px] mx-auto px-3 mb-1.5">
         <div className={`bg-gray-900/50 backdrop-blur-sm border rounded-lg p-2 transition-all ${
           !state.isMyTurn && isOpponentConnected ? 'opacity-40' : 'border-gray-700'
         } ${state.isMyTurn && isOpponentConnected ? 'border-blue-500' : ''}`}>

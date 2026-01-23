@@ -110,7 +110,7 @@ function App() {
   }
 
   return (
-    <div className="bg-gray-950 pt-3 min-h-screen">
+    <div className="bg-gray-950 pt-2 min-h-screen">
       <GameBoard
         state={state}
         onWordClick={toggleWordSelection}
