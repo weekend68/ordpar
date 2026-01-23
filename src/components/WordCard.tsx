@@ -26,7 +26,7 @@ export function WordCard({
       aria-pressed={isSelected}
       tabIndex={isCompleted ? -1 : 0}
       className={`
-        h-12 flex items-center justify-center px-2 py-1.5
+        h-14 flex items-center justify-center px-2.5 py-2
         rounded-lg transition-all duration-200
         ${isRevealed ? 'bg-gray-800 text-white border border-gray-700 hover:bg-gray-750' : 'bg-gray-200 border border-transparent'}
         ${isSelected ? 'bg-blue-500 text-white border-2 border-blue-300 shadow-[0_0_25px_rgba(59,130,246,0.8)] scale-[1.02]' : ''}
@@ -36,7 +36,7 @@ export function WordCard({
       `}
     >
       <span
-        className={`${isSelected ? 'font-extrabold' : 'font-bold'} text-center ${fontSizeClass}`}
+        className={`${isSelected ? 'font-bold' : 'font-semibold'} text-center text-sm`}
       >
         {isRevealed ? word : '???'}
       </span>
