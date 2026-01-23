@@ -17,7 +17,7 @@ export function GameLobby() {
 
     try {
       // 1. Generate word set from backend API
-      const { id: wordSetId } = await generateWordSet({});
+      const { id: wordSetId, groups } = await generateWordSet({});
 
       // 2. Generate unique session code
       const { data: codeData, error: codeError } = await supabase
@@ -26,12 +26,20 @@ export function GameLobby() {
       if (codeError) throw codeError;
       const sessionCode = codeData as string;
 
-      // 3. Create game session
+      // 3. Shuffle all words (Fisher-Yates)
+      const allWords = groups.flatMap(g => g.words);
+      for (let i = allWords.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
+      }
+
+      // 4. Create game session with shuffled words
       const { data: session, error: sessionError } = await supabase
         .from('game_sessions')
         .insert({
           session_code: sessionCode,
           word_set_id: wordSetId,
+          shuffled_words: allWords,
           status: 'waiting',
           current_player: 1,
         })

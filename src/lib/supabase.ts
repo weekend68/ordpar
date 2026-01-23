@@ -24,6 +24,7 @@ export interface GameSession {
   id: string;
   session_code: string;
   word_set_id: string;
+  shuffled_words: string[];
   player1_id: string | null;
   player2_id: string | null;
   current_player: 1 | 2;

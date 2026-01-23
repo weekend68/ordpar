@@ -3,33 +3,6 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase, GameSession } from '../lib/supabase';
 import { MultiplayerGameState, WordSet, WordGroup } from '../types';
 
-// Seeded shuffle for consistent ordering between players
-function seededShuffle<T>(array: T[], seed: string): T[] {
-  const shuffled = [...array];
-
-  // Simple hash function to convert seed to number
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    hash = ((hash << 5) - hash) + seed.charCodeAt(i);
-    hash = hash & hash; // Convert to 32bit integer
-  }
-
-  // Seeded random number generator
-  let currentSeed = Math.abs(hash);
-  const seededRandom = () => {
-    const x = Math.sin(currentSeed++) * 10000;
-    return x - Math.floor(x);
-  };
-
-  // Fisher-Yates with seeded random
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(seededRandom() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
-  return shuffled;
-}
-
 function initMultiplayerGame(
   wordSet: WordSet,
   sessionId: string,
@@ -37,9 +10,8 @@ function initMultiplayerGame(
   localPlayerNumber: 1 | 2,
   session: GameSession
 ): MultiplayerGameState {
-  // Shuffle words with sessionCode as seed - same order for both players!
-  const allWordsOrdered = wordSet.groups.flatMap((g) => g.words);
-  const allWords = seededShuffle(allWordsOrdered, sessionCode);
+  // Use shuffled words from database - same order for both players!
+  const allWords = session.shuffled_words;
 
   return {
     groups: wordSet.groups,
