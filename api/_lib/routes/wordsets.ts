@@ -52,11 +52,11 @@ router.post('/generate', async (req, res) => {
     } else {
       console.log(`🚂 No cache, calling Railway AI service...`);
 
-      // Aggregate all feedback to send to AI
-      const aggregatedFeedback = await aggregateGroupFeedback();
-      const feedbackForPrompt = formatFeedbackForAI(aggregatedFeedback);
-
-      console.log(`📊 Sending aggregated feedback to AI (${aggregatedFeedback.excellent.length + aggregatedFeedback.good.length + aggregatedFeedback.too_easy.length + aggregatedFeedback.bad.length} examples)`);
+      // Feedback disabled - was causing quality degradation
+      // TODO: Re-enable when we have better quality control (threshold of 3+ ratings)
+      // const aggregatedFeedback = await aggregateGroupFeedback();
+      // const feedbackForPrompt = formatFeedbackForAI(aggregatedFeedback);
+      // console.log(`📊 Sending aggregated feedback to AI (${aggregatedFeedback.excellent.length + aggregatedFeedback.good.length + aggregatedFeedback.too_easy.length + aggregatedFeedback.bad.length} examples)`);
 
       // Call Railway for generation (no timeout limit)
       const railwayUrl = process.env.RAILWAY_AI_URL || 'http://localhost:3002';
@@ -65,7 +65,7 @@ router.post('/generate', async (req, res) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           player_profile: profile,
-          feedback: feedbackForPrompt
+          feedback: '' // No feedback for now
         })
       });
 
