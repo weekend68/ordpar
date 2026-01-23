@@ -41,14 +41,6 @@ function App() {
     }
   };
 
-  const { state, toggleWordSelection, guessGroup, passTurn, clearSelection, resetGame } =
-    useGameState(wordSet!);
-
-  const handlePlayAgain = useCallback(() => {
-    loadNewWordSet();
-    resetGame();
-  }, [resetGame]);
-
   // Show loading screen
   if (isLoading) {
     return <LoadingScreen />;
@@ -72,6 +64,14 @@ function App() {
       </div>
     );
   }
+
+  const { state, toggleWordSelection, guessGroup, passTurn, clearSelection, resetGame } =
+    useGameState(wordSet);
+
+  const handlePlayAgain = useCallback(() => {
+    loadNewWordSet();
+    resetGame();
+  }, [resetGame]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
