@@ -5,7 +5,7 @@ import { useMultiplayerGameState } from '../hooks/useMultiplayerGameState';
 import { GameBoard } from '../components/GameBoard';
 import { LoadingScreen } from '../components/LoadingScreen';
 import { FeedbackModal, GroupRating } from '../components/FeedbackModal';
-import { submitFeedback, generateWordSet } from '../services/api';
+import { submitFeedback } from '../services/api';
 import { WordSet } from '../types';
 
 export function MultiplayerGame() {
@@ -19,7 +19,6 @@ export function MultiplayerGame() {
   const [error, setError] = useState<string | null>(null);
   const [showWinModal, setShowWinModal] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [isCreatingNewGame, setIsCreatingNewGame] = useState(false);
 
   // Get player number from query params
   const playerNumberStr = searchParams.get('player');
@@ -107,11 +106,6 @@ export function MultiplayerGame() {
     }
   }, [state?.status, showWinModal, showFeedback]);
 
-  // Handle "Nytt spel" - go back to lobby to create/join new game
-  const handleCreateNewGame = useCallback(() => {
-    navigate('/multiplayer');
-  }, [navigate]);
-
   // Handle feedback submission (Player 1 only)
   const handleFeedbackSubmit = useCallback(async (ratings: Map<number, GroupRating>) => {
     if (!wordSet) return;
@@ -140,9 +134,6 @@ export function MultiplayerGame() {
   // Check for disconnect (last activity > 2 minutes ago)
   // Opponent is connected if status is 'playing' or 'completed'
   const isOpponentConnected = state && (state.status === 'won' || state.opponentConnected);
-  const isOpponentDisconnected =
-    isOpponentConnected &&
-    Date.now() - (state?.lastActivity?.getTime() || Date.now()) > 120000; // 2 minutes
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -227,7 +218,6 @@ export function MultiplayerGame() {
         state={state}
         onWordClick={toggleWordSelection}
         onGuess={guessGroup}
-        onPass={passTurn}
         onClear={clearSelection}
         source={source}
         isMyTurn={state.isMyTurn}

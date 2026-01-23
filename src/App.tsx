@@ -109,7 +109,6 @@ function App() {
         state={state}
         onWordClick={toggleWordSelection}
         onGuess={guessGroup}
-        onPass={passTurn}
         onClear={clearSelection}
         source={source}
       />

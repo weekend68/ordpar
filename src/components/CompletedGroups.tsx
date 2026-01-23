@@ -1,5 +1,4 @@
 import { WordGroup } from '../types';
-import { getFontSize } from '../utils/fontSizer';
 
 interface CompletedGroupsProps {
   groups: WordGroup[];

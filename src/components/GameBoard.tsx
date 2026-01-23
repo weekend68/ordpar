@@ -7,19 +7,17 @@ interface GameBoardProps {
   state: GameState;
   onWordClick: (word: string) => void;
   onGuess: () => void;
-  onPass: () => void;
   onClear: () => void;
   source?: 'gemini' | 'dn' | 'claude' | null;
   isMyTurn?: boolean; // For multiplayer - default true for single player
 }
 
-export function GameBoard({ state, onWordClick, onGuess, onPass, onClear, source, isMyTurn = true }: GameBoardProps) {
+export function GameBoard({ state, onWordClick, onGuess, onClear, source, isMyTurn = true }: GameBoardProps) {
   const {
     allWords,
     completedGroups,
     selectedWords,
     shakingWords,
-    currentPlayer,
   } = state;
 
   // Filter out completed words from grid
