@@ -1,6 +1,6 @@
 import express from 'express';
 import { generateValidatedWordSet } from '../services/ai/orchestrator.js';
-import { saveWordSet } from '../services/supabase/wordSets.js';
+import { saveWordSet, getRandomWordSet } from '../services/supabase/wordSets.js';
 import { DifficultyProfile } from '../types.js';
 
 const router = express.Router();
@@ -29,15 +29,28 @@ router.post('/generate', async (req, res) => {
     console.log(`   Profile:`, profile);
     console.log(`   Bad patterns: ${bad_patterns.length}`);
 
-    // Generate word set
-    const groups = await generateValidatedWordSet(
-      difficulty_level,
-      profile,
-      bad_patterns
-    );
+    // Try to use cached word set first (fast, <1s)
+    const cached = await getRandomWordSet(difficulty_level);
 
-    // Save to database
-    const wordSetId = await saveWordSet(difficulty_level, groups);
+    let groups;
+    let wordSetId;
+
+    if (cached) {
+      console.log(`💾 Using cached word set: ${cached.id}`);
+      groups = cached.groups;
+      wordSetId = cached.id;
+    } else {
+      console.log(`🎲 No cache, generating new word set...`);
+      // Generate word set (slow, 10-20s)
+      groups = await generateValidatedWordSet(
+        difficulty_level,
+        profile,
+        bad_patterns
+      );
+
+      // Save to database
+      wordSetId = await saveWordSet(difficulty_level, groups);
+    }
 
     res.json({
       success: true,

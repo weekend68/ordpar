@@ -66,6 +66,30 @@ export async function getWordSet(id: string): Promise<WordSetRecord | null> {
 }
 
 /**
+ * Get a random word set by difficulty (for quick serving, no user tracking)
+ */
+export async function getRandomWordSet(
+  difficultyLevel: 'LÄTT' | 'MEDEL' | 'SVÅR' | 'EXPERT'
+): Promise<WordSetRecord | null> {
+  const supabase = getSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('word_sets')
+    .select('*')
+    .eq('difficulty_level', difficultyLevel)
+    .order('times_used', { ascending: true })
+    .limit(10)
+    .maybeSingle();
+
+  if (error) {
+    console.error('❌ Failed to get random word set:', error);
+    return null;
+  }
+
+  return data;
+}
+
+/**
  * Find unused word sets for a specific user to avoid duplicates
  */
 export async function findUnusedWordSet(
