@@ -73,20 +73,26 @@ export async function getRandomWordSet(
 ): Promise<WordSetRecord | null> {
   const supabase = getSupabaseClient();
 
+  // Get 10 least-used word sets, then pick one randomly
   const { data, error } = await supabase
     .from('word_sets')
     .select('*')
     .eq('difficulty_level', difficultyLevel)
     .order('times_used', { ascending: true })
-    .limit(10)
-    .maybeSingle();
+    .limit(10);
 
   if (error) {
     console.error('❌ Failed to get random word set:', error);
     return null;
   }
 
-  return data;
+  if (!data || data.length === 0) {
+    return null;
+  }
+
+  // Pick a random one from the least-used sets
+  const randomIndex = Math.floor(Math.random() * data.length);
+  return data[randomIndex];
 }
 
 /**

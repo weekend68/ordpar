@@ -11,12 +11,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load initial word set
-  useEffect(() => {
-    loadNewWordSet();
-  }, []);
-
-  const loadNewWordSet = async () => {
+  // Load new word set (wrapped in useCallback to prevent infinite loops)
+  const loadNewWordSet = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -39,7 +35,12 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  // Load initial word set on mount
+  useEffect(() => {
+    loadNewWordSet();
+  }, [loadNewWordSet]);
 
   // Show loading screen
   if (isLoading) {
@@ -71,7 +72,7 @@ function App() {
   const handlePlayAgain = useCallback(() => {
     loadNewWordSet();
     resetGame();
-  }, [resetGame]);
+  }, [loadNewWordSet, resetGame]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
