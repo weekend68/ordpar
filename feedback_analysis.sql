@@ -26,17 +26,18 @@ SELECT
   ws.created_at,
   ws.quality_score,
   ws.times_used,
-  (ws.groups->group_index->>'category') as category,
-  (ws.groups->group_index->>'words') as words,
+  g.idx as group_index,
+  (ws.groups->g.idx->>'category') as category,
+  (ws.groups->g.idx->>'words') as words,
   gf.rating,
   gf.feedback_text,
   gf.created_at as feedback_date
 FROM word_sets ws
-CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS group_index
+CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS g(idx)
 LEFT JOIN group_feedback gf
   ON gf.word_set_id = ws.id
-  AND gf.group_index = group_index
-ORDER BY ws.created_at DESC, group_index;
+  AND gf.group_index = g.idx
+ORDER BY ws.created_at DESC, g.idx;
 
 -- 3. Bad groups only (for prompt improvement)
 SELECT
@@ -59,17 +60,18 @@ SELECT
   ws.created_at,
   ws.quality_score,
   ws.times_used,
-  (ws.groups->group_index->>'category') as category,
-  (ws.groups->group_index->>'words') as words,
+  g.idx as group_index,
+  (ws.groups->g.idx->>'category') as category,
+  (ws.groups->g.idx->>'words') as words,
   gf.rating,
   gf.feedback_text
 FROM word_sets ws
-CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS group_index
+CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS g(idx)
 LEFT JOIN group_feedback gf
   ON gf.word_set_id = ws.id
-  AND gf.group_index = group_index
+  AND gf.group_index = g.idx
 WHERE ws.source = 'gemini'
-ORDER BY ws.created_at DESC, group_index;
+ORDER BY ws.created_at DESC, g.idx;
 
 -- 5. DN vs Gemini comparison
 SELECT
@@ -97,21 +99,21 @@ SELECT
   TO_CHAR(ws.created_at, 'YYYY-MM-DD HH24:MI:SS') as created_at,
   ws.quality_score,
   ws.times_used,
-  group_index as group_number,
-  (ws.groups->group_index->>'category') as category,
-  (ws.groups->group_index->'words'->>0) as word1,
-  (ws.groups->group_index->'words'->>1) as word2,
-  (ws.groups->group_index->'words'->>2) as word3,
-  (ws.groups->group_index->'words'->>3) as word4,
+  g.idx as group_number,
+  (ws.groups->g.idx->>'category') as category,
+  (ws.groups->g.idx->'words'->>0) as word1,
+  (ws.groups->g.idx->'words'->>1) as word2,
+  (ws.groups->g.idx->'words'->>2) as word3,
+  (ws.groups->g.idx->'words'->>3) as word4,
   COALESCE(gf.rating, 'no_feedback') as rating,
   COALESCE(gf.feedback_text, '') as feedback_text,
   COALESCE(TO_CHAR(gf.created_at, 'YYYY-MM-DD HH24:MI:SS'), '') as feedback_date
 FROM word_sets ws
-CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS group_index
+CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS g(idx)
 LEFT JOIN group_feedback gf
   ON gf.word_set_id = ws.id
-  AND gf.group_index = group_index
-ORDER BY ws.created_at DESC, group_index;
+  AND gf.group_index = g.idx
+ORDER BY ws.created_at DESC, g.idx;
 
 -- 7. Bad groups from bad_groups table (negative training data)
 SELECT
