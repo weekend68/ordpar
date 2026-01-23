@@ -4,12 +4,14 @@ import { useGameState } from './hooks/useGameState';
 import { GameBoard } from './components/GameBoard';
 import { GameResult } from './components/GameResult';
 import { LoadingScreen } from './components/LoadingScreen';
+import { FeedbackModal, GroupRating } from './components/FeedbackModal';
 import { WordSet } from './types';
 
 function App() {
   const [wordSet, setWordSet] = useState<WordSet | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   // Load new word set (wrapped in useCallback to prevent infinite loops)
   const loadNewWordSet = useCallback(async () => {
@@ -54,6 +56,22 @@ function App() {
 
   // ALL hooks must be before conditional returns - Rules of Hooks
   const handlePlayAgain = useCallback(() => {
+    // Show feedback modal first
+    setShowFeedback(true);
+  }, []);
+
+  const handleFeedbackSubmit = useCallback(async (ratings: Map<number, GroupRating>) => {
+    console.log('📊 Feedback received:', Object.fromEntries(ratings));
+
+    // TODO: Send to API
+    // await submitFeedback(wordSet.id, ratings);
+
+    setShowFeedback(false);
+    loadNewWordSet();
+  }, [loadNewWordSet]);
+
+  const handleFeedbackSkip = useCallback(() => {
+    setShowFeedback(false);
     loadNewWordSet();
   }, [loadNewWordSet]);
 
@@ -91,12 +109,20 @@ function App() {
         onClear={clearSelection}
       />
 
-      {state.status === 'won' && (
+      {state.status === 'won' && !showFeedback && (
         <GameResult
           status={state.status}
           groups={state.groups}
           completedGroups={state.completedGroups}
           onPlayAgain={handlePlayAgain}
+        />
+      )}
+
+      {showFeedback && wordSet && (
+        <FeedbackModal
+          groups={wordSet.groups}
+          onSubmit={handleFeedbackSubmit}
+          onSkip={handleFeedbackSkip}
         />
       )}
     </div>
