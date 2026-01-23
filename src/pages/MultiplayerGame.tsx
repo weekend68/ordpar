@@ -166,7 +166,7 @@ export function MultiplayerGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 py-8">
+    <div className="min-h-screen bg-gray-950 pt-8">
       {/* HUD - Instrumentpanel */}
       <div className="max-w-[430px] mx-auto px-3 mb-4">
         <div className={`bg-gray-900/50 backdrop-blur-sm border rounded-xl p-3 transition-all ${

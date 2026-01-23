@@ -24,6 +24,11 @@
   .animate-shake {
     animation: shake 0.5s ease-in-out;
   }
+
+  /* iOS safe area padding for bottom - 4rem base + safe area for mobile browsers */
+  .pb-safe {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
 }
 
 body {

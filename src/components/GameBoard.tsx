@@ -28,7 +28,7 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
   const wordsInGrid = allWords.filter((w) => !completedWords.has(w));
 
   return (
-    <div className="max-w-[430px] mx-auto px-3 py-4">
+    <div className="max-w-[430px] mx-auto px-3 pt-4 pb-safe">
       {/* Header */}
       <div className="mb-6 text-center">
         <h1 className="text-4xl font-bold text-white mb-2">
