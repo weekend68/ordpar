@@ -27,23 +27,33 @@ interface GenerateWordSetResponse {
 export async function generateWordSet(
   request: GenerateWordSetRequest = {}
 ): Promise<WordGroup[]> {
-  const response = await fetch(`${API_URL}/wordsets/generate`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(request),
-  });
+  const url = `${API_URL}/wordsets/generate`;
+  console.log('🌐 Fetching from:', url);
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+
+    console.log('📡 Response status:', response.status, response.statusText);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: GenerateWordSetResponse = await response.json();
+
+    if (!data.success || !data.word_set) {
+      throw new Error(data.error || 'Failed to generate word set');
+    }
+
+    return data.word_set.groups;
+  } catch (error) {
+    console.error('🚨 Fetch error:', error);
+    throw error;
   }
-
-  const data: GenerateWordSetResponse = await response.json();
-
-  if (!data.success || !data.word_set) {
-    throw new Error(data.error || 'Failed to generate word set');
-  }
-
-  return data.word_set.groups;
 }
