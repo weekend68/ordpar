@@ -43,6 +43,15 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty deps - only run once on mount
 
+  // Initialize game state - must be called before any conditional returns (Rules of Hooks)
+  // Create dummy wordSet for initial render before data loads
+  const dummyWordSet: WordSet = {
+    id: 'loading',
+    groups: [],
+  };
+  const { state, toggleWordSelection, guessGroup, passTurn, clearSelection } =
+    useGameState(wordSet || dummyWordSet);
+
   // Show loading screen
   if (isLoading) {
     return <LoadingScreen />;
@@ -66,9 +75,6 @@ function App() {
       </div>
     );
   }
-
-  const { state, toggleWordSelection, guessGroup, passTurn, clearSelection } =
-    useGameState(wordSet);
 
   const handlePlayAgain = useCallback(() => {
     // Just load new word set - useGameState will auto-initialize with new wordSet
