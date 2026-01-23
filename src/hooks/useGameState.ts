@@ -1,8 +1,20 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { GameState, WordSet } from '../types';
 
+// Fisher-Yates shuffle algorithm
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function initGame(wordSet: WordSet): GameState {
-  const allWords = wordSet.groups.flatMap((g) => g.words);
+  // Get all words and shuffle them randomly
+  const allWordsOrdered = wordSet.groups.flatMap((g) => g.words);
+  const allWords = shuffleArray(allWordsOrdered);
 
   return {
     groups: wordSet.groups,
