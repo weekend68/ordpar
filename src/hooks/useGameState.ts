@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { GameState, WordSet } from '../types';
 
 function initGame(wordSet: WordSet): GameState {
@@ -17,12 +17,15 @@ function initGame(wordSet: WordSet): GameState {
 
 export function useGameState(wordSet: WordSet) {
   const [state, setState] = useState<GameState>(() => initGame(wordSet));
+  const prevWordSetIdRef = useRef<string>(wordSet.id);
 
-  // Reset game state when wordSet changes (new game loaded)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Reset game state only when wordSet ID actually changes (skip initial mount)
   useEffect(() => {
-    setState(initGame(wordSet));
-  }, [wordSet.id]); // Only depend on ID to avoid unnecessary resets
+    if (prevWordSetIdRef.current !== wordSet.id) {
+      setState(initGame(wordSet));
+      prevWordSetIdRef.current = wordSet.id;
+    }
+  }, [wordSet.id, wordSet]);
 
   const toggleWordSelection = useCallback((word: string) => {
     setState((prev) => {
