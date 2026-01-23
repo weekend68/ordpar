@@ -30,7 +30,6 @@ SELECT
   (ws.groups->g.idx->>'category') as category,
   (ws.groups->g.idx->>'words') as words,
   gf.rating,
-  gf.feedback_text,
   gf.created_at as feedback_date
 FROM word_sets ws
 CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS g(idx)
@@ -47,7 +46,6 @@ SELECT
   (ws.groups->gf.group_index->>'category') as category,
   (ws.groups->gf.group_index->>'words') as words,
   gf.rating,
-  gf.feedback_text,
   gf.created_at as feedback_date
 FROM word_sets ws
 JOIN group_feedback gf ON gf.word_set_id = ws.id
@@ -63,8 +61,7 @@ SELECT
   g.idx as group_index,
   (ws.groups->g.idx->>'category') as category,
   (ws.groups->g.idx->>'words') as words,
-  gf.rating,
-  gf.feedback_text
+  gf.rating
 FROM word_sets ws
 CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS g(idx)
 LEFT JOIN group_feedback gf
@@ -106,7 +103,6 @@ SELECT
   (ws.groups->g.idx->'words'->>2) as word3,
   (ws.groups->g.idx->'words'->>3) as word4,
   COALESCE(gf.rating, 'no_feedback') as rating,
-  COALESCE(gf.feedback_text, '') as feedback_text,
   COALESCE(TO_CHAR(gf.created_at, 'YYYY-MM-DD HH24:MI:SS'), '') as feedback_date
 FROM word_sets ws
 CROSS JOIN LATERAL generate_series(0, jsonb_array_length(ws.groups) - 1) AS g(idx)
