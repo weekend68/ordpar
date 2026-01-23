@@ -9,9 +9,9 @@
     "skipLibCheck": true,
     "strict": true,
     "outDir": "./dist",
-    "rootDir": "../",
+    "rootDir": "./src",
     "types": ["node"]
   },
-  "include": ["src/**/*", "../api/_lib/**/*"],
-  "exclude": ["node_modules", "dist", "../node_modules", "../src", "../scripts"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

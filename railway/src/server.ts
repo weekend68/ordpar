@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { generateValidatedWordSet } from '../../api/_lib/services/ai/orchestrator.js';
-import { saveWordSet } from '../../api/_lib/services/supabase/wordSets.js';
-import type { DifficultyProfile } from '../../api/_lib/types.js';
+import { generateValidatedWordSet } from './services/ai/orchestrator.js';
+import { saveWordSet } from './services/supabase/wordSets.js';
+import type { DifficultyProfile } from './types.js';
 
 dotenv.config();
 
