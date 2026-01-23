@@ -1,6 +1,17 @@
 import express from 'express';
 import { getRandomWordSet } from '../services/supabase/wordSets.js';
-import { DifficultyProfile } from '../types.js';
+import { DifficultyProfile, WordGroup } from '../types.js';
+
+interface RailwayResponse {
+  success: boolean;
+  word_set?: {
+    id: string;
+    groups: WordGroup[];
+    difficulty_level: string;
+    created_at: string;
+  };
+  error?: string;
+}
 
 const router = express.Router();
 
@@ -56,8 +67,8 @@ router.post('/generate', async (req, res) => {
         throw new Error(`Railway AI service error: ${response.status}`);
       }
 
-      const data = await response.json();
-      if (!data.success) {
+      const data = await response.json() as RailwayResponse;
+      if (!data.success || !data.word_set) {
         throw new Error(data.error || 'Railway generation failed');
       }
 
