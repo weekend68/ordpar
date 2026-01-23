@@ -292,7 +292,7 @@ export function useMultiplayerGameState(
 
         return newState;
       } else {
-        // Incorrect guess - shake and switch turn
+        // Incorrect guess - shake but keep words selected for easy adjustment
         const shakingWords = new Set(prev.selectedWords);
         const newCurrentPlayer: 1 | 2 = prev.currentPlayer === 1 ? 2 : 1;
 
@@ -309,7 +309,7 @@ export function useMultiplayerGameState(
 
         const newState = {
           ...prev,
-          selectedWords: new Set<string>(),
+          selectedWords: prev.selectedWords, // KEEP selected for adjustment
           shakingWords,
           currentPlayer: newCurrentPlayer,
           isMyTurn: newCurrentPlayer === prev.localPlayerNumber,
@@ -318,7 +318,7 @@ export function useMultiplayerGameState(
         // Update remote
         updateRemoteState({
           currentPlayer: newCurrentPlayer,
-          selectedWords: new Set(),
+          selectedWords: prev.selectedWords, // Keep selected words in sync
           completedGroups: prev.completedGroups,
         });
 

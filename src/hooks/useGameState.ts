@@ -106,7 +106,7 @@ export function useGameState(wordSet: WordSet) {
           currentPlayer: prev.currentPlayer === 1 ? 2 : 1,
         };
       } else {
-        // Incorrect guess - just shake and switch turn
+        // Incorrect guess - shake but keep words selected for easy adjustment
         const shakingWords = new Set(prev.selectedWords);
 
         // Clear shake after animation
@@ -119,7 +119,7 @@ export function useGameState(wordSet: WordSet) {
 
         return {
           ...prev,
-          selectedWords: new Set(),
+          selectedWords: prev.selectedWords, // KEEP selected for adjustment
           shakingWords,
           // Switch turn after incorrect guess
           currentPlayer: prev.currentPlayer === 1 ? 2 : 1,
