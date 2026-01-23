@@ -1,5 +1,6 @@
 import express from 'express';
 import { getRandomWordSet } from '../services/supabase/wordSets.js';
+import { getBadGroups, formatBadPatternsForAI } from '../services/supabase/badGroups.js';
 import { DifficultyProfile, WordGroup } from '../types.js';
 
 interface RailwayResponse {
@@ -51,6 +52,13 @@ router.post('/generate', async (req, res) => {
       wordSetId = cached.id;
     } else {
       console.log(`🚂 No cache, calling Railway AI service...`);
+
+      // Get bad groups from database to avoid
+      const badGroups = await getBadGroups(1); // Min 1 report
+      const badPatterns = formatBadPatternsForAI(badGroups);
+
+      console.log(`📋 Sending ${badPatterns.length} bad patterns to AI`);
+
       // Call Railway for generation (no timeout limit)
       const railwayUrl = process.env.RAILWAY_AI_URL || 'http://localhost:3002';
       const response = await fetch(`${railwayUrl}/generate`, {
@@ -59,7 +67,7 @@ router.post('/generate', async (req, res) => {
         body: JSON.stringify({
           difficulty_level,
           player_profile: profile,
-          bad_patterns
+          bad_patterns: badPatterns
         })
       });
 

@@ -2,68 +2,48 @@ import { getSupabaseClient } from './client.js';
 
 export interface BadGroupRecord {
   id: string;
-  user_id: string | null;
   category: string;
   words: string[];
+  pattern_type: string | null;
   reason: string;
+  reported_count: number;
   created_at: string;
+  updated_at: string;
 }
 
-/**
- * Save a bad group (negative training data)
- */
-export async function saveBadGroup(
-  userId: string | null,
-  category: string,
-  words: string[],
-  reason: string
-): Promise<string> {
-  const supabase = getSupabaseClient();
-
-  const { data, error } = await supabase
-    .from('bad_groups')
-    .insert({
-      user_id: userId,
-      category,
-      words,
-      reason
-    })
-    .select('id')
-    .single();
-
-  if (error) {
-    console.error('❌ Failed to save bad group:', error);
-    throw new Error(`Failed to save bad group: ${error.message}`);
-  }
-
-  console.log(`🚫 Saved bad group: ${category}`);
-  return data.id;
-}
+// Note: saveBadGroup is now handled in feedback.ts when rating='bad'
 
 /**
- * Get all bad groups (for AI training)
+ * Get bad groups to avoid in AI generation
+ * Returns groups that have been reported as bad, sorted by report count
  */
-export async function getAllBadGroups(): Promise<BadGroupRecord[]> {
+export async function getBadGroups(minReports: number = 1): Promise<BadGroupRecord[]> {
   const supabase = getSupabaseClient();
 
   const { data, error } = await supabase
     .from('bad_groups')
     .select('*')
-    .order('created_at', { ascending: false });
+    .gte('reported_count', minReports)
+    .order('reported_count', { ascending: false })
+    .limit(50); // Limit to avoid sending too much data to AI
 
   if (error) {
     console.error('❌ Failed to get bad groups:', error);
     return [];
   }
 
+  const count = data ? data.length : 0;
+  console.log(`🚫 Found ${count} bad groups (min reports: ${minReports})`);
+
   return data || [];
 }
 
 /**
- * Format bad groups as training patterns for AI
+ * Format bad groups as patterns for AI to avoid
  */
-export function formatBadGroupsForAI(badGroups: BadGroupRecord[]): string[] {
-  return badGroups.map(bg => {
-    return `Undvik: "${bg.category}" med orden [${bg.words.join(', ')}]. Anledning: ${bg.reason}`;
+export function formatBadPatternsForAI(badGroups: BadGroupRecord[]): string[] {
+  return badGroups.map((group) => {
+    const wordsStr = group.words.join(', ');
+    return `${group.category}: [${wordsStr}] - ${group.reason} (${group.reported_count}x rapporterad)`;
   });
 }
