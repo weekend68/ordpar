@@ -1,36 +1,42 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-let anthropic: Anthropic | null = null;
+let genAI: GoogleGenerativeAI | null = null;
 
-function getClient(): Anthropic {
-  if (!anthropic) {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+function getClient(): GoogleGenerativeAI {
+  if (!genAI) {
+    const apiKey = process.env.GOOGLE_API_KEY;
     if (!apiKey) {
-      throw new Error('ANTHROPIC_API_KEY environment variable is not set');
+      throw new Error('GOOGLE_API_KEY environment variable is not set');
     }
-    anthropic = new Anthropic({ apiKey });
+    genAI = new GoogleGenerativeAI(apiKey);
   }
-  return anthropic;
+  return genAI;
 }
 
 export async function callClaude(prompt: string): Promise<string> {
   const client = getClient();
 
-  const message = await client.messages.create({
-    model: 'claude-opus-4-5-20251101', // Opus 4.5 - bättre på svenska och komplexa uppgifter
-    max_tokens: 2000,
-    messages: [{
-      role: 'user',
-      content: prompt
-    }]
+  // Gemini 2.5 Flash - bäst på svenska ordlekar
+  const model = client.getGenerativeModel({
+    model: 'gemini-2.5-flash'
   });
 
-  const content = message.content[0];
-  if (content.type !== 'text') {
-    throw new Error('Expected text response from Claude');
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: {
+      maxOutputTokens: 8000, // Högre limit för 6 grupper med förklaringar
+      temperature: 1.0
+    }
+  });
+
+  const response = result.response;
+  const text = response.text();
+
+  if (!text) {
+    throw new Error('Expected text response from Gemini');
   }
 
-  return content.text;
+  return text;
 }
 
 export function parseJSON<T>(response: string): T {
