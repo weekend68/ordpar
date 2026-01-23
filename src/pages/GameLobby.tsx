@@ -145,7 +145,7 @@ export function GameLobby() {
               </button>
 
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/singleplayer')}
                 disabled={isLoading}
                 className="w-full bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 text-white font-bold py-4 px-6 rounded-lg transition-colors text-lg"
               >

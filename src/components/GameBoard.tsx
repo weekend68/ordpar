@@ -8,11 +8,12 @@ interface GameBoardProps {
   onWordClick: (word: string) => void;
   onGuess: () => void;
   onClear: () => void;
+  onQuit?: () => void; // Optional quit handler
   source?: 'gemini' | 'dn' | 'claude' | null;
   isMyTurn?: boolean; // For multiplayer - default true for single player
 }
 
-export function GameBoard({ state, onWordClick, onGuess, onClear, source, isMyTurn = true }: GameBoardProps) {
+export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source, isMyTurn = true }: GameBoardProps) {
   const {
     allWords,
     completedGroups,
@@ -74,17 +75,30 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, source, isMyTu
         >
           Gissa
         </button>
-        <button
-          onClick={onClear}
-          disabled={selectedWords.size === 0 || !isMyTurn}
-          className={`font-medium text-sm transition-colors ${
-            selectedWords.size > 0 && isMyTurn
-              ? 'text-gray-400 hover:text-white cursor-pointer'
-              : 'text-gray-700 cursor-not-allowed'
-          }`}
-        >
-          Rensa markering
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onClear}
+            disabled={selectedWords.size === 0 || !isMyTurn}
+            className={`font-medium text-sm transition-colors ${
+              selectedWords.size > 0 && isMyTurn
+                ? 'text-gray-400 hover:text-white cursor-pointer'
+                : 'text-gray-700 cursor-not-allowed'
+            }`}
+          >
+            Rensa markering
+          </button>
+          {onQuit && (
+            <>
+              <span className="text-gray-700">•</span>
+              <button
+                onClick={onQuit}
+                className="font-medium text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+              >
+                Ge upp
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Source attribution at bottom */}

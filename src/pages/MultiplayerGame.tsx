@@ -125,6 +125,10 @@ export function MultiplayerGame() {
     setShowWinModal(true);
   }, []);
 
+  const handleQuit = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
   // Player 1 gets feedback modal, Player 2 just sees win screen
   const handleShowFeedback = useCallback(() => {
     setShowWinModal(false);
@@ -147,7 +151,7 @@ export function MultiplayerGame() {
           <h2 className="text-2xl font-bold text-red-600 mb-2">Något gick fel</h2>
           <p className="text-gray-700 mb-6">{error || gameError}</p>
           <button
-            onClick={() => navigate('/multiplayer')}
+            onClick={() => navigate('/')}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition-colors"
           >
             Tillbaka till lobby
@@ -219,6 +223,7 @@ export function MultiplayerGame() {
         onWordClick={toggleWordSelection}
         onGuess={guessGroup}
         onClear={clearSelection}
+        onQuit={handleQuit}
         source={source}
         isMyTurn={state.isMyTurn}
       />
@@ -237,7 +242,7 @@ export function MultiplayerGame() {
 
             <div className="space-y-3">
               <button
-                onClick={() => navigate('/multiplayer')}
+                onClick={() => navigate('/')}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors"
               >
                 Tillbaka till lobby

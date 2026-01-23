@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { generateWordSet, submitFeedback } from './services/api';
 import { useGameState } from './hooks/useGameState';
 import { GameBoard } from './components/GameBoard';
@@ -8,6 +9,7 @@ import { FeedbackModal, GroupRating } from './components/FeedbackModal';
 import { WordSet } from './types';
 
 function App() {
+  const navigate = useNavigate();
   const [wordSet, setWordSet] = useState<WordSet | null>(null);
   const [source, setSource] = useState<'gemini' | 'dn' | 'claude' | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,6 +81,10 @@ function App() {
     loadNewWordSet();
   }, [loadNewWordSet]);
 
+  const handleQuit = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
   // Show loading screen
   if (isLoading) {
     return <LoadingScreen />;
@@ -110,6 +116,7 @@ function App() {
         onWordClick={toggleWordSelection}
         onGuess={guessGroup}
         onClear={clearSelection}
+        onQuit={handleQuit}
         source={source}
       />
 

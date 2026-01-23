@@ -7,12 +7,12 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,  // Single player game
+    element: <GameLobby />,  // Multiplayer lobby (main entry point)
     errorElement: <ErrorBoundary><div /></ErrorBoundary>,
   },
   {
-    path: '/multiplayer',
-    element: <GameLobby />,  // Create/join lobby
+    path: '/singleplayer',
+    element: <App />,  // Single player game
     errorElement: <ErrorBoundary><div /></ErrorBoundary>,
   },
   {
