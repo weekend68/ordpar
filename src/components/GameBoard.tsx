@@ -28,13 +28,13 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
   const wordsInGrid = allWords.filter((w) => !completedWords.has(w));
 
   return (
-    <div className="max-w-[430px] mx-auto px-3 py-4">
-      {/* Header */}
-      <div className="mb-6 text-center">
-        <h1 className="text-4xl font-bold text-white mb-2">
+    <div className="max-w-[430px] mx-auto px-3 py-2">
+      {/* Header - compact */}
+      <div className="mb-3 text-center">
+        <h1 className="text-3xl font-bold text-white mb-1">
           Ordspel
         </h1>
-        <p className="text-sm text-gray-400">
+        <p className="text-xs text-gray-400">
           Gruppera orden fyra och fyra
         </p>
       </div>
@@ -42,8 +42,8 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
       {/* Completed groups */}
       <CompletedGroups groups={completedGroups} />
 
-      {/* Word grid - 2 columns x 8 rows for mobile */}
-      <div className="grid grid-cols-2 gap-2.5 mb-4">
+      {/* Word grid - 2 columns x 8 rows for mobile - compact */}
+      <div className="grid grid-cols-2 gap-2 mb-3">
         {wordsInGrid.map((word) => {
           const isSelected = selectedWords.has(word);
           const isShaking = shakingWords.has(word);
@@ -62,12 +62,12 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
         })}
       </div>
 
-      {/* Action buttons - always visible */}
-      <div className="flex flex-col items-center gap-3">
+      {/* Action buttons - always visible - compact */}
+      <div className="flex flex-col items-center gap-2">
         <button
           onClick={onGuess}
           disabled={selectedWords.size !== 4 || !isMyTurn}
-          className={`w-full h-14 font-bold text-lg px-8 rounded-xl transition-all ${
+          className={`w-full h-12 font-bold text-base px-6 rounded-xl transition-all ${
             selectedWords.size === 4 && isMyTurn
               ? 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-lg cursor-pointer'
               : 'bg-gray-800 text-gray-600 cursor-not-allowed'
@@ -75,11 +75,11 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
         >
           Gissa
         </button>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <button
             onClick={onClear}
             disabled={selectedWords.size === 0 || !isMyTurn}
-            className={`font-medium text-sm transition-colors ${
+            className={`font-medium text-xs transition-colors ${
               selectedWords.size > 0 && isMyTurn
                 ? 'text-gray-400 hover:text-white cursor-pointer'
                 : 'text-gray-700 cursor-not-allowed'
@@ -92,7 +92,7 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
               <span className="text-gray-700">•</span>
               <button
                 onClick={onQuit}
-                className="font-medium text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+                className="font-medium text-xs text-gray-400 hover:text-white transition-colors cursor-pointer"
               >
                 Ge upp
               </button>
@@ -103,9 +103,6 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
 
       {/* Source attribution at bottom */}
       <SourceAttribution source={source} />
-
-      {/* Extra spacer for mobile browser UI */}
-      <div className="h-32"></div>
 
     </div>
   );

@@ -166,48 +166,48 @@ export function MultiplayerGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 pt-8">
-      {/* HUD - Instrumentpanel */}
-      <div className="max-w-[430px] mx-auto px-3 mb-4">
-        <div className={`bg-gray-900/50 backdrop-blur-sm border rounded-xl p-3 transition-all ${
+    <div className="min-h-screen bg-gray-950 pt-3">
+      {/* HUD - Instrumentpanel - compact */}
+      <div className="max-w-[430px] mx-auto px-3 mb-2">
+        <div className={`bg-gray-900/50 backdrop-blur-sm border rounded-lg p-2 transition-all ${
           !state.isMyTurn && isOpponentConnected ? 'opacity-40' : 'border-gray-700'
         } ${state.isMyTurn && isOpponentConnected ? 'border-blue-500' : ''}`}>
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500">🎮</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-gray-500 text-sm">🎮</span>
               <div>
-                <div className="text-xs text-gray-500">Session</div>
-                <div className="font-mono font-bold text-white">{sessionCode}</div>
+                <div className="text-[10px] text-gray-500">Session</div>
+                <div className="font-mono font-bold text-white text-xs">{sessionCode}</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <div className="text-center">
-                <div className="text-xs text-gray-500">Spelare</div>
-                <div className="text-lg font-bold text-white">{localPlayerNumber}</div>
+                <div className="text-[10px] text-gray-500">Spelare</div>
+                <div className="text-base font-bold text-white">{localPlayerNumber}</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               {!isOpponentConnected ? (
                 <>
-                  <span className="text-yellow-500">⏳</span>
+                  <span className="text-yellow-500 text-sm">⏳</span>
                   <div className="text-right">
-                    <div className="text-xs text-yellow-500 font-semibold">Väntar...</div>
+                    <div className="text-[11px] text-yellow-500 font-semibold">Väntar...</div>
                   </div>
                 </>
               ) : state.isMyTurn ? (
                 <>
-                  <span className="text-green-500">👆</span>
+                  <span className="text-green-500 text-sm">👆</span>
                   <div className="text-right">
-                    <div className="text-xs text-green-500 font-semibold">Din tur!</div>
+                    <div className="text-[11px] text-green-500 font-semibold">Din tur!</div>
                   </div>
                 </>
               ) : (
                 <>
-                  <span className="text-gray-500">⏳</span>
+                  <span className="text-gray-500 text-sm">⏳</span>
                   <div className="text-right">
-                    <div className="text-xs text-gray-400 font-semibold">Väntar...</div>
+                    <div className="text-[11px] text-gray-400 font-semibold">Väntar...</div>
                   </div>
                 </>
               )}

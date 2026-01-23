@@ -26,8 +26,8 @@ export function WordCard({
       aria-pressed={isSelected}
       tabIndex={isCompleted ? -1 : 0}
       className={`
-        h-16 flex items-center justify-center px-3 py-3
-        rounded-xl transition-all duration-200
+        h-14 flex items-center justify-center px-2 py-2
+        rounded-lg transition-all duration-200
         ${isRevealed ? 'bg-gray-800 text-white border border-gray-700 hover:bg-gray-750' : 'bg-gray-200 border border-transparent'}
         ${isSelected ? 'bg-blue-500 text-white border-2 border-blue-300 shadow-[0_0_25px_rgba(59,130,246,0.8)] scale-[1.02]' : ''}
         ${isCompleted ? 'bg-gray-700 text-gray-400 border border-gray-600 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]'}
