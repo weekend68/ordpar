@@ -17,6 +17,7 @@ interface GenerateWordSetRequest {
 interface GenerateWordSetResponse {
   success: boolean;
   word_set?: {
+    id: string;
     groups: WordGroup[];
     difficulty_level: string;
     created_at: string;
@@ -26,7 +27,7 @@ interface GenerateWordSetResponse {
 
 export async function generateWordSet(
   request: GenerateWordSetRequest = {}
-): Promise<WordGroup[]> {
+): Promise<{ id: string; groups: WordGroup[] }> {
   const url = `${API_URL}/wordsets/generate`;
   console.log('🌐 Fetching from:', url);
 
@@ -51,7 +52,10 @@ export async function generateWordSet(
       throw new Error(data.error || 'Failed to generate word set');
     }
 
-    return data.word_set.groups;
+    return {
+      id: data.word_set.id,
+      groups: data.word_set.groups,
+    };
   } catch (error) {
     console.error('🚨 Fetch error:', error);
     throw error;
