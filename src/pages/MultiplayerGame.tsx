@@ -90,7 +90,7 @@ export function MultiplayerGame() {
   }, [sessionCode]);
 
   // Initialize multiplayer game state
-  const { state, error: gameError, toggleWordSelection, guessGroup, passTurn, clearSelection } =
+  const { state, error: gameError, toggleWordSelection, guessGroup, clearSelection } =
     useMultiplayerGameState(
       sessionCode || '',
       wordSet || { id: '', groups: [] },

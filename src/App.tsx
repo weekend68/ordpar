@@ -51,7 +51,7 @@ function App() {
     id: 'loading',
     groups: [],
   };
-  const { state, toggleWordSelection, guessGroup, passTurn, clearSelection } =
+  const { state, toggleWordSelection, guessGroup, clearSelection } =
     useGameState(wordSet || dummyWordSet);
 
   // ALL hooks must be before conditional returns - Rules of Hooks
