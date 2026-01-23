@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { generateWordSet } from './services/api';
+import { generateWordSet, submitFeedback } from './services/api';
 import { useGameState } from './hooks/useGameState';
 import { GameBoard } from './components/GameBoard';
 import { GameResult } from './components/GameResult';
@@ -61,14 +61,18 @@ function App() {
   }, []);
 
   const handleFeedbackSubmit = useCallback(async (ratings: Map<number, GroupRating>) => {
-    console.log('📊 Feedback received:', Object.fromEntries(ratings));
+    if (!wordSet) return;
 
-    // TODO: Send to API
-    // await submitFeedback(wordSet.id, ratings);
+    try {
+      await submitFeedback(wordSet.id, ratings);
+    } catch (error) {
+      console.error('Failed to submit feedback:', error);
+      // Continue anyway - don't block user from playing
+    }
 
     setShowFeedback(false);
     loadNewWordSet();
-  }, [loadNewWordSet]);
+  }, [wordSet, loadNewWordSet]);
 
   const handleFeedbackSkip = useCallback(() => {
     setShowFeedback(false);

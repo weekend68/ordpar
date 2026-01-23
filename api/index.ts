@@ -4,6 +4,7 @@ import cors from 'cors';
 import wordSetsRouter from './_lib/routes/wordsets.js';
 import gamesRouter from './_lib/routes/games.js';
 import pairsRouter from './_lib/routes/pairs.js';
+import feedbackRouter from './_lib/routes/feedback.js';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/wordsets', wordSetsRouter);
 app.use('/api/games', gamesRouter);
 app.use('/api/pairs', pairsRouter);
+app.use('/api/feedback', feedbackRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {

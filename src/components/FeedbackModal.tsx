@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { WordGroup } from '../types';
 
-export type GroupRating = 'excellent' | 'good' | 'too_easy' | 'bad' | null;
+export type GroupRating = 'excellent' | 'good' | 'too_easy' | 'bad';
+type GroupRatingOrNull = GroupRating | null;
 
 interface FeedbackModalProps {
   groups: WordGroup[];
@@ -10,8 +11,8 @@ interface FeedbackModalProps {
 }
 
 export function FeedbackModal({ groups, onSubmit, onSkip }: FeedbackModalProps) {
-  // Track rating for each group by index
-  const [ratings, setRatings] = useState<Map<number, GroupRating>>(new Map());
+  // Track rating for each group by index (can be null if not rated)
+  const [ratings, setRatings] = useState<Map<number, GroupRatingOrNull>>(new Map());
 
   const handleRating = (groupIndex: number, rating: GroupRating) => {
     const newRatings = new Map(ratings);
@@ -29,7 +30,19 @@ export function FeedbackModal({ groups, onSubmit, onSkip }: FeedbackModalProps) 
       // No ratings given, just skip
       onSkip();
     } else {
-      onSubmit(ratings);
+      // Filter out null values and submit only actual ratings
+      const nonNullRatings = new Map<number, GroupRating>();
+      ratings.forEach((rating, index) => {
+        if (rating !== null) {
+          nonNullRatings.set(index, rating);
+        }
+      });
+
+      if (nonNullRatings.size > 0) {
+        onSubmit(nonNullRatings);
+      } else {
+        onSkip();
+      }
     }
   };
 

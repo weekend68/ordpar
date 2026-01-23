@@ -57,3 +57,56 @@ export async function generateWordSet(
     throw error;
   }
 }
+
+export type GroupRating = 'excellent' | 'good' | 'too_easy' | 'bad';
+
+interface FeedbackRequest {
+  word_set_id: string;
+  ratings: {
+    group_index: number;
+    rating: GroupRating;
+  }[];
+}
+
+interface FeedbackResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+export async function submitFeedback(
+  wordSetId: string,
+  ratings: Map<number, GroupRating>
+): Promise<void> {
+  const ratingsArray = Array.from(ratings.entries()).map(([group_index, rating]) => ({
+    group_index,
+    rating,
+  }));
+
+  const request: FeedbackRequest = {
+    word_set_id: wordSetId,
+    ratings: ratingsArray,
+  };
+
+  console.log('📤 Submitting feedback:', request);
+
+  const response = await fetch(`${API_URL}/feedback/submit`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data: FeedbackResponse = await response.json();
+
+  if (!data.success) {
+    throw new Error(data.error || 'Failed to submit feedback');
+  }
+
+  console.log('✅ Feedback submitted successfully');
+}
