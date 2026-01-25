@@ -1,0 +1,44 @@
+{
+  "valid": false,
+  "overall_quality": "poor",
+  "issues": [
+    {
+      "type": "overlap",
+      "severity": "critical",
+      "description": "Ordet 'KLUBBA' från grupp 1 (Sportutrustning) passar även 100% logiskt korrekt i grupp 3 (Ord som byter ordklass), då det kan vara både ett substantiv (t.ex. ishockeyklubba, godisklubba) och ett verb i imperativ (t.ex. att klubba ner, klubba igenom ett beslut). Detta skapar en oacceptabel tvetydighet i pusslet.",
+      "affected_groups": [
+        1,
+        3
+      ],
+      "affected_words": [
+        "KLUBBA"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Byt ut ordet 'KLUBBA' i grupp 1 (Sportutrustning) mot ett ord som enbart passar den kategorin, för att eliminera överlappen. Ett förslag är 'BOLL' eller 'HJÄLM'.",
+    "Överväg att lägga till 'KLUBBA' i grupp 3 om ett av de nuvarande orden där byts ut, då det är ett utmärkt exempel för den kategorin."
+  ],
+  "group_quality": [
+    {
+      "group_index": 0,
+      "quality": "excellent",
+      "comment": "Kategorin 'Färger' är tydlig och orden passar entydigt. Inga polysemi- eller överlappsproblem."
+    },
+    {
+      "group_index": 1,
+      "quality": "poor",
+      "comment": "Kategorin 'Sportutrustning' är i grunden bra, men ordet 'KLUBBA' utgör ett kritiskt logiskt fel då det även passar perfekt i grupp 3. De övriga orden (KLOT, RACKET, SKRIDSKO) är dock väl valda för kategorin."
+    },
+    {
+      "group_index": 2,
+      "quality": "excellent",
+      "comment": "Kategorin 'Svenska städer vid stora sjöar' är mycket väl utformad. Kopplingen är specifik och korrekt, och det finns en bra 'villospår'-potential i att bara se dem som 'svenska städer'. Den kulturella relevansen är hög."
+    },
+    {
+      "group_index": 3,
+      "quality": "excellent",
+      "comment": "Kategorin 'Ord som byter ordklass' är smart och utmanande. Samtliga ord (ARM, BANK, BIT, FLYG) är utmärkta exempel som tydligt kan tillhöra olika ordklasser med samma stavning. 'Villospåret' att de ser ut som vanliga substantiv är väl designat."
+    }
+  ]
+}

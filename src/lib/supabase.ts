@@ -29,6 +29,7 @@ export interface GameSession {
   player2_id: string | null;
   current_player: 1 | 2;
   selected_words: string[];
+  shaking_words: string[];
   completed_groups: number[];
   moves_history: any[];
   status: 'waiting' | 'playing' | 'completed' | 'abandoned';

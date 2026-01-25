@@ -1,0 +1,56 @@
+{
+  "thought_process": {
+    "strategy": "Min strategi är att gradvis öka svårighetsgraden och byta typ av association, vilket är klassiskt för DN:s 'Klassiska femman'. Jag börjar med konkreta, visuella teman för att bygga upp lösarens självförtroende. Därefter övergår jag till svensk allmänbildning som kräver specifik kunskap men är fortsatt entydig. Den sista, lila gruppen, är 'Aha-upplevelsen'. Här är fällan att ordens vanliga, konkreta betydelser (som till exempel 'POST' som brev eller 'VET' som sädesslag) kommer att vilseleda lösaren att söka ett tematiskt samband. Nyckeln är att istället upptäcka det metalingvistiska sambandet: att alla ord fungerar som både substantiv och verb i exakt samma form. Red herrings är därmed inbyggda i lila-gruppens ords starka, tematiska associationer.",
+    "pivot_words": [
+      "POST",
+      "VET"
+    ],
+    "cultural_check": "Den blå kategorin, 'Större städer i Skåne', är vald för dess starka relevans för en svensk publik. Skåne är Sveriges sydligaste landskap och dess städer (Malmö, Helsingborg, Lund, Kristianstad) är inte bara geografiskt framträdande utan också kulturellt och historiskt viktiga. Alla dessa städer är välkända för den genomsnittlige svensken och utgör en viktig del av svensk allmänbildning, vilket gör kategorin både igenkännbar och lagom utmanande."
+  },
+  "groups": [
+    {
+      "category": "Kontorsmaterial",
+      "words": [
+        "PENNA",
+        "SAX",
+        "HÄFTAPPARAT",
+        "PAPPERSKLÄMMA"
+      ],
+      "level": "yellow",
+      "explanation": "Dessa är vanliga och konkreta föremål som hittas på de flesta kontor eller i hemmets skrivbordslåda. En enkel start."
+    },
+    {
+      "category": "Molntyper",
+      "words": [
+        "CIRRUS",
+        "CUMULUS",
+        "STRATUS",
+        "NIMBUS"
+      ],
+      "level": "green",
+      "explanation": "Dessa är de fyra huvudtyperna av molnklassificeringar. De är allmänbildning inom meteorologi men kräver en viss specifik kunskap."
+    },
+    {
+      "category": "Större städer i Skåne",
+      "words": [
+        "MALMÖ",
+        "LUND",
+        "HELSINGBORG",
+        "KRISTIANSTAD"
+      ],
+      "level": "blue",
+      "explanation": "Dessa är fyra av de största och mest kända städerna i Sveriges sydligaste landskap, Skåne. Kräver svensk allmänbildning."
+    },
+    {
+      "category": "Ord som är både substantiv och verb",
+      "words": [
+        "KÖR",
+        "STYR",
+        "VET",
+        "POST"
+      ],
+      "level": "purple",
+      "explanation": "Alla dessa ord kan fungera som både substantiv och verb i exakt samma form, utan någon extra bokstav eller böjning. Till exempel: 'En kör' (n) / 'Kör bil!' (v), 'Ett styr' (n) / 'Styr båten!' (v), 'Ett vet' (n) / 'Jag vet' (v), 'En post' (n) / 'Posta brevet!' (v)."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "thought_process": {
+    "strategy": "Strategin bygger på att skapa distinkta lingvistiska kategorier som ändå tillåter överlappningar för 'Aha-upplevelser'. Jag har noggrant valt ord så att minst två av dem fungerar som 'Pivots' (Red Herrings) genom att kunna passa in plausibelt i en annan kategori än sin tilltänkta. Den gula kategorin (Polysemi) är den mest grundläggande och fungerar som en tidig fallgrop. Den lila kategorin (Homografi) är den svåraste och kräver den mest precisa definitionen av 'lemma' för att uppfylla kraven på identiska ordformer mellan olika ordklasser, i linje med det givna exemplet 'PLAN'.",
+    "pivot_words": [
+      "FOT",
+      "KRONAN"
+    ],
+    "cultural_check": "Den blå kategorin ('Begrepp representerade av ett namn') är starkt förankrad i svensk kultur och språk. 'SYSTEMET' är en nästan universell metonymi för Systembolaget i Sverige, 'KYRKAN' syftar ofta på den kyrkliga institutionen, 'RIGGEN' är ett vardagligt namn för Riksdagen, och 'KRONAN' representerar kungahuset eller staten. Dessa uttryck är välkända och djupt inbäddade i det svenska språkbruket, vilket gör kategorin mycket relevant för en svensk publik.",
+    "pivot_explanation": "• FOT: Ordet 'FOT' tillhör gruppen 'Kroppsdelar som metafor' (Katakres, t.ex. 'foten av ett berg'). Dock har 'FOT' även en polysemisk betydelse som en måttenhet ('en fot'), vilket kan leda spelaren att felaktigt placera den i gruppen 'Ord med flera betydelser' (Polysemi).\n• KRONAN: Ordet 'KRONAN' tillhör gruppen 'Begrepp representerade av ett namn' (Metonymi, t.ex. 'Kronan' för staten/kungahuset). Basordet 'KRONA' är dock starkt polysemiskt (t.ex. 'en krona' som valuta, 'en krona' på huvudet, 'trädets krona'), vilket kan förleda spelaren till att placera det i gruppen 'Ord med flera betydelser' (Polysemi)."
+  },
+  "groups": [
+    {
+      "category": "Ord med flera betydelser (Polysemi)",
+      "words": [
+        "BANK",
+        "BOK",
+        "VÅG",
+        "TAL"
+      ],
+      "level": "yellow",
+      "explanation": "Dessa ord har minst två vitt skilda betydelser som substantiv i sin grundform (t.ex. BANK som finansinstitut och sittmöbel)."
+    },
+    {
+      "category": "Kroppsdelar som metafor (Katakres)",
+      "words": [
+        "HALS",
+        "ÖGA",
+        "RYGG",
+        "FOT"
+      ],
+      "level": "green",
+      "explanation": "Ord som beskriver delar av kroppen men också används metaforiskt för delar av livlösa föremål (t.ex. HALS på flaska, FOT på berg)."
+    },
+    {
+      "category": "Begrepp representerade av ett namn (Metonymi)",
+      "words": [
+        "SYSTEMET",
+        "KYRKAN",
+        "RIGGEN",
+        "KRONAN"
+      ],
+      "level": "blue",
+      "explanation": "Fasta uttryck eller namn som metonymiskt syftar på större institutioner eller begrepp (t.ex. SYSTEMET för Systembolaget, KRONAN för staten)."
+    },
+    {
+      "category": "Samma stavning, olika ordklass (Homografi)",
+      "words": [
+        "KAST",
+        "LÅT",
+        "BIT",
+        "SKUM"
+      ],
+      "level": "purple",
+      "explanation": "Ord som stavas identiskt men kan tillhöra olika ordklasser (substantiv och verb, där verbet representeras av dess stam/imperativform, t.ex. KAST som 'ett kast' och som stam i 'kasta')."
+    }
+  ]
+}

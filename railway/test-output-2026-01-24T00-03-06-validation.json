@@ -1,0 +1,45 @@
+{
+  "valid": false,
+  "overall_quality": "poor",
+  "issues": [
+    {
+      "type": "grammatical_error",
+      "severity": "critical",
+      "description": "Grupp 3: Orden 'KAST', 'SKOTT', 'SMÄLL', 'SLAG' fungerar inte som verb i sin grundform utan att ändra form, vilket strider mot kategorin 'Ord som är både substantiv och verb' och protokollets definition (t.ex. 'att kasta' istället för 'att kast').",
+      "affected_groups": [
+        3
+      ],
+      "affected_words": [
+        "KAST",
+        "SKOTT",
+        "SMÄLL",
+        "SLAG"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Grupp 3 måste genereras om med ord som strikt följer regeln för ord som är både substantiv och verb i sin grundform (t.ex. 'plan', 'fil', 'borr')."
+  ],
+  "group_quality": [
+    {
+      "group_index": 0,
+      "quality": "excellent",
+      "comment": "Tydlig och elegant koppling. Ordet 'KRONA' fungerar som ett bra villospår (krona/mynt)."
+    },
+    {
+      "group_index": 1,
+      "quality": "good",
+      "comment": "Kategorin är tydlig och orden passar väl. Ordet 'SMÅLAND' fungerar som ett bra villospår (litet land/provins). Förklaringen av 'SMÅSUGEN' som 'små sugen' är något klumpig men kategorin är korrekt."
+    },
+    {
+      "group_index": 2,
+      "quality": "excellent",
+      "comment": "Mycket tydlig koppling. Orden 'VIKINGARNA' och 'ARVINGARNA' är utmärkta villospår (historiska folk/familjer vs. bandnamn)."
+    },
+    {
+      "group_index": 3,
+      "quality": "poor",
+      "comment": "Kategoridefinitionen 'Ord som är både substantiv och verb' följs inte av något av orden. Alla ord är substantiv vars motsvarande verb har en annan form. Detta är ett kritiskt fel."
+    }
+  ]
+}

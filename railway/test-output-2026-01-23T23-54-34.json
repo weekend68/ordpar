@@ -1,0 +1,48 @@
+{
+  "groups": [
+    {
+      "category": "Fåglar",
+      "words": [
+        "SKATA",
+        "KRÅKA",
+        "DUVA",
+        "GÖK"
+      ],
+      "level": "yellow",
+      "explanation": "Alla ord är namn på vanliga fågelarter. Trots att 'DUVA' även kan tolkas som ett verb (att dyka) och 'SKATA' som en typ av rörelse, är deras primära och enhetliga betydelse här kopplad till fåglar."
+    },
+    {
+      "category": "Kan vara 'vit'",
+      "words": [
+        "MJÖLK",
+        "SNÖ",
+        "LÖGN",
+        "SÖNDAG"
+      ],
+      "level": "green",
+      "explanation": "Alla ord kan kombineras med adjektivet 'vit': vit mjölk, vit snö, vit lögn och vit söndag (som i Påskdagen eller Pingstdagen). Orden 'SÖNDAG' och 'LÖGN' fungerar som starka villospår då de primärt associeras med dagar i veckan respektive abstrakta begrepp."
+    },
+    {
+      "category": "Astrid Lindgren-karaktärer",
+      "words": [
+        "PIPPI",
+        "KARLSSON",
+        "EMIL",
+        "RONJA"
+      ],
+      "level": "blue",
+      "explanation": "Alla ord är välkända karaktärer från Astrid Lindgrens sagor. Orden 'EMIL' och 'KARLSSON' är vanliga förnamn och efternamn, vilket vid första anblick kan vilseleda spelaren att tro att det är en grupp med generella namn."
+    },
+    {
+      "category": "Börjar och slutar med samma bokstav",
+      "words": [
+        "APA",
+        "ÖGA",
+        "ÅLÅ",
+        "IDA"
+      ],
+      "level": "purple",
+      "explanation": "Det gemensamma för alla ord är att de inleds och avslutas med samma bokstav. 'APA' kan vid första anblick misstas för att ingå i en djurkategori och 'ÖGA' i en kroppsdelkategori, vilket döljer den formella språkliga regeln."
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "groups": [
+    {
+      "category": "Fiskeredskap",
+      "words": [
+        "NÄT",
+        "REV",
+        "SPÖ",
+        "DRAG"
+      ],
+      "level": "yellow",
+      "explanation": "Enkla och konkreta föremål som används för fiske. Ett villospår är 'NÄT' som också används i bollsporter, vilket kan locka mot den gröna kategorin. 'KAST' från den lila gruppen kan också lockas hit."
+    },
+    {
+      "category": "Förknippas med fotboll",
+      "words": [
+        "STRAFF",
+        "KICK",
+        "DOMARE",
+        "TRÄNARE"
+      ],
+      "level": "green",
+      "explanation": "Tematisk koppling till sporten fotboll. 'MÅL' från den lila gruppen är ett starkt villospår hit. 'KICK' kan också vara ett villospår till den lila gruppen då det kan vara både substantiv och verb ('en kick', 'att kicka')."
+    },
+    {
+      "category": "Kända svenska maträtter",
+      "words": [
+        "KÖTTBULLAR",
+        "STRÖMMING",
+        "RÅRAKOR",
+        "ÄRTSOPPA"
+      ],
+      "level": "blue",
+      "explanation": "Kräver svensk allmänbildning för att känna igen dessa klassiska maträtter. 'MÅL' från den lila gruppen är ett tydligt villospår hit, då det kan syfta på en 'måltid'."
+    },
+    {
+      "category": "Ord som är både substantiv och verb (samma form)",
+      "words": [
+        "KAST",
+        "MÅL",
+        "SKOTT",
+        "FALL"
+      ],
+      "level": "purple",
+      "explanation": "Den svåraste kategorin, som handlar om ordets form och dess dubbla grammatiska funktion. 'KAST' (ett kast, att kasta), 'MÅL' (ett mål, att måla/nå ett mål), 'SKOTT' (ett skott, att skjuta) och 'FALL' (ett fall, att falla). Både 'KAST' och 'MÅL' fungerar som pivotord med tydliga villospår till de andra kategorierna."
+    }
+  ]
+}

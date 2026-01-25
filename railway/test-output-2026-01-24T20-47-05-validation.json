@@ -1,0 +1,68 @@
+{
+  "valid": false,
+  "overall_quality": "poor",
+  "issues": [
+    {
+      "type": "overlap",
+      "severity": "critical",
+      "description": "Ordet 'SKIVA' passar lika bra i kategorin 'Saker som är runda' (Grupp 0) som i 'Ord som är substantiv och verb' (Grupp 3). Detta skapar en fundamental tvetydighet som gör pusslet olösbart på ett entydigt sätt, då varje ord ska ha en unik placering.",
+      "affected_groups": [
+        0,
+        3
+      ],
+      "affected_words": [
+        "SKIVA"
+      ]
+    },
+    {
+      "type": "overlap",
+      "severity": "critical",
+      "description": "Ordet 'RING' passar lika bra i kategorin 'Ord som är substantiv och verb' (Grupp 3) som i 'Saker som är runda' (Grupp 0). Detta skapar en fundamental tvetydighet som gör pusslet olösbart på ett entydigt sätt, då varje ord ska ha en unik placering.",
+      "affected_groups": [
+        3,
+        0
+      ],
+      "affected_words": [
+        "RING"
+      ]
+    },
+    {
+      "type": "grammatical_fit",
+      "severity": "high",
+      "description": "Ordet 'PLAN' fungerar inte som verb i sin grundform, vilket kategorin 'Ord som är substantiv och verb' kräver. Exemplet 'att planera' ändrar ordets form, vilket strider mot kategorins definition ('utan att ändra form'). Det korrekta verbet är 'att plana' (att jämna ut), vilket har en annan betydelse än vad som ofta associeras med 'plan' (som i en ritning eller ett flygplan).",
+      "affected_groups": [
+        3
+      ],
+      "affected_words": [
+        "PLAN"
+      ]
+    }
+  ],
+  "recommendations": [
+    "De kritiska överlappen med 'SKIVA' och 'RING' måste åtgärdas. Ett pussel är bara bra om det är 'Fair but Tough'. Att ord passar lika bra i två kategorier är inte tufft, det är orättvist och gör pusslet olösbart. Byt ut dessa ord i minst en av kategorierna för att säkerställa att varje ord har en unik lösning.",
+    "Granska ordet 'PLAN' i Grupp 3. Antingen måste ordet bytas ut mot ett som entydigt fungerar både som substantiv och verb i samma grundform, eller så behöver kategorins förklaring justeras, vilket dock kan försvaga dess elegans.",
+    "Överväg att behålla de avsedda 'villospåren' genom att välja ord som har *svaga* associationer till andra grupper, snarare än *lika starka* kopplingar som bryter entydigheten."
+  ],
+  "group_quality": [
+    {
+      "group_index": 0,
+      "quality": "acceptable",
+      "comment": "Kategorin 'Saker som är runda' är tydlig. Dock skapar ordet 'SKIVA' ett kritiskt överlapp med Grupp 3, vilket drar ner kvaliteten för gruppen som helhet, då den inte kan stå ensam."
+    },
+    {
+      "group_index": 1,
+      "quality": "excellent",
+      "comment": "Kategorin 'Redskap för sömnad' är mycket tydlig, konsekvent och elegant. Inga tveksamheter eller överlapp. Ett klockrent exempel på en bra grupp."
+    },
+    {
+      "group_index": 2,
+      "quality": "excellent",
+      "comment": "Kategorin 'Svenska städer vid vatten' är utmärkt. Den är allmänbildande, kulturellt relevant och orden är entydiga. Precis den typ av kategori vi vill se i DN."
+    },
+    {
+      "group_index": 3,
+      "quality": "poor",
+      "comment": "Kategorin 'Ord som är substantiv och verb' lider av två allvarliga problem: dels det kritiska överlappet med 'RING' till Grupp 0, dels att ordet 'PLAN' inte lever upp till kategorins krav att fungera som verb i sin grundform. Detta gör gruppen svag och tvetydig."
+    }
+  ]
+}

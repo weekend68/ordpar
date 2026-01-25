@@ -1,0 +1,44 @@
+{
+  "valid": false,
+  "overall_quality": "poor",
+  "issues": [
+    {
+      "type": "overlap",
+      "severity": "critical",
+      "description": "Ordet 'LJUS' från grupp 1 ('Källor till ljus') passar perfekt in i kategorin för grupp 3 ('Ord som är både substantiv och adjektiv i grundform'). Det kan vara både ett substantiv ('ett ljus', 'en lampa') och ett adjektiv ('ljus färg', 'ljusa rum'). Detta är ett logiskt överlapp som förstör spelet då det inte är 'Fair but Tough' att ett ord tillhör två kategorier fullt ut.",
+      "affected_groups": [
+        1,
+        3
+      ],
+      "affected_words": [
+        "LJUS"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Ersätt ordet 'LJUS' i grupp 1 med ett annat ord som enbart är en 'Källa till ljus' men som inte också kan fungera som både substantiv och adjektiv i grundform. Exempelvis 'SOL', 'GLÖDLAMPA' eller 'ELD'.",
+    "För att uppnå 'excellent' kvalitet gällande villospår, sträva efter minst tre ord som fungerar som aktiva pivoter mellan olika kategorier (utöver 'PLAN' och de andra orden i grupp 3 som har potential). Detta kräver dock att inga kritiska överlapp existerar."
+  ],
+  "group_quality": [
+    {
+      "group_index": 0,
+      "quality": "good",
+      "comment": "Tydlig och konkret koppling mellan orden och kategorin. Inga uppenbara villospår eller problem."
+    },
+    {
+      "group_index": 1,
+      "quality": "poor",
+      "comment": "Innehåller ordet 'LJUS' som skapar ett kritiskt överlapp med kategori 3, vilket gör att gruppens ordval är problematiskt och pusslet ofullständigt."
+    },
+    {
+      "group_index": 2,
+      "quality": "excellent",
+      "comment": "Välkända platser i Stockholm med tydlig koppling och god allmänbildning som gör gruppen relevant för målgruppen. Elegant och utan problem."
+    },
+    {
+      "group_index": 3,
+      "quality": "excellent",
+      "comment": "Kategorin är tydlig och väl exemplifierad. 'PLAN' är ett bra uttalat villospår. Orden 'REN', 'FRI' och 'VILD' uppvisar också polysemi på ett sätt som skulle kunna fungera som villospår i andra sammanhang. Gruppen i sig är välkonstruerad och håller hög kvalitet."
+    }
+  ]
+}

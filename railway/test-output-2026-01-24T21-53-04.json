@@ -1,0 +1,56 @@
+{
+  "thought_process": {
+    "strategy": "Jag har konstruerat pusslet genom att systematiskt arbeta mig igenom de lingvistiska operationerna, med särskilt fokus på de tekniska kraven för varje nivå. Jag började med 'Homografi' (Lila) eftersom kravet på 'identiska lemmas' är det mest stringenta och avgörande för val av ord. Därefter byggde jag 'Metonymi' (Blå) med relevanta kulturella referenser. 'Katakres' (Grön) med dess formmetaforer följde, och slutligen 'Polysemi' (Gul), som med sin bredd gav utrymme att placera ut de nödvändiga pivot-orden (Red Herrings) för att skapa 'Aha-upplevelser'. Min strategi för fällor är att välja ord som har en stark koppling till sin *korrekta* grupp, men som samtidigt, genom en *annan* lingvistisk princip, också skulle kunna locka spelaren mot en *felaktig* grupp. Detta tvingar spelaren att tänka noga kring den specifika typen av koppling som varje kategori representerar.",
+    "pivot_words": [
+      "KRONA",
+      "HALS"
+    ],
+    "cultural_check": "Den blå kategorin, 'Kända svenska namn/uttryck', är noga utvald för att resonera starkt med en svensk publik. 'HESA' är en direkt referens till 'Hesa Fredrik', det nationella varningssystemet. 'VILLA' leder omedelbart tankarna till 'Villa Villekulla', Pippi Långstrumps ikoniska hem. 'NOBEL' kopplar till Alfred Nobel och det världskända Nobelpriset, en central del av Sveriges internationella image. 'VASA' syftar till Gustav Vasa och det traditionsrika Vasaloppet, djupt rotade i svensk historia och kultur. Dessa är allmänt kända begrepp som garanterar en 'aha-upplevelse' för den svenska spelaren."
+  },
+  "groups": [
+    {
+      "category": "Ord med flera betydelser (Polysemi)",
+      "words": [
+        "KRONA",
+        "SKÄRM",
+        "ANKARE",
+        "PASS"
+      ],
+      "level": "yellow",
+      "explanation": "Dessa ord har flera distinkta och ofta orelaterade betydelser, men behåller samma stavning. Till exempel kan KRONA vara en valuta, en huvudbonad, eller toppen på ett träd."
+    },
+    {
+      "category": "Kroppsdelar på ting (Katakres)",
+      "words": [
+        "HALS",
+        "FOT",
+        "ARM",
+        "ÖGA"
+      ],
+      "level": "green",
+      "explanation": "Ord som ursprungligen betecknar kroppsdelar men som metaforiskt används för att beskriva delar av livlösa föremål eller abstraktioner, som 'flaskhals', 'bordsfot' eller 'nålöga'."
+    },
+    {
+      "category": "Kända svenska namn/uttryck (Metonymi)",
+      "words": [
+        "HESA",
+        "VILLA",
+        "NOBEL",
+        "VASA"
+      ],
+      "level": "blue",
+      "explanation": "Ord som direkt kopplar till eller ingår i välkända svenska namn, fasta uttryck eller institutioner (t.ex. HESA som i 'Hesa Fredrik' eller VILLA som i 'Villa Villekulla')."
+    },
+    {
+      "category": "Ord som är både substantiv och verb (Homografi)",
+      "words": [
+        "VARA",
+        "BAND",
+        "FÄRJA",
+        "LÅS"
+      ],
+      "level": "purple",
+      "explanation": "Dessa ord stavas identiskt men kan fungera som olika ordklasser – både som substantiv (t.ex. en produkt, ett musikband) och som verb (t.ex. att existera, att binda i preteritum, att transportera med färja, att stänga med lås i imperativ)."
+    }
+  ]
+}

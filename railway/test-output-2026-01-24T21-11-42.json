@@ -1,0 +1,56 @@
+{
+  "thought_process": {
+    "strategy": "Min strategi för att lägga ut villospår (Red Herrings) i detta pussel är att utnyttja 'Homonym-feber' till fullo. Varje ord är valt för att ha minst två, ofta tre, helt distinkta betydelsefält. Villospåren uppstår när en spelare identifierar en av betydelserna och försöker passa in ordet i en kategori baserad på den betydelsen, trots att en annan, starkare betydelse anknyter till en annan grupp. Exempelvis kan 'BANK' associeras med verbet 'banka', men i den gula kategorin är det endast dess substantiva homonymer som är relevanta (finansinstitut, sandbank, slag). 'KÖR' kan vara en sångkör eller en bilkö (substantiv), men också imperativformen av verbet 'köra'. Denna ambivalens skapar en tydlig fälla för den som inte läser kategoribeskrivningarna noggrant. Den lila kategorin agerar som den ultimata fällan, där ord som 'VASS', 'BÄR', 'KÖR' och 'SKAL' medvetet bryter mot ordklassrenligheten i de övriga kategorierna, just för att de har distinkta homografa betydelser över olika ordklasser.",
+    "pivot_words": [
+      "LAG",
+      "KÖR"
+    ],
+    "cultural_check": "Den blå kategorin, 'Svenska ord med dolda historier', är noga utvald för att ha djup kulturell resonans för en svensk publik: \n1. **JUL**: Representerar inte bara den mest centrala svenska högtiden utan är även homonym med 'hjul', ett vardagligt men fundamentalt objekt. Kopplingen mellan en traditionell högtid och ett tekniskt föremål är unikt för svenska språket på detta vis. \n2. **BRUK**: Ett ord som fångar både 'användning' och 'bruksorter' eller 'järnbruk'. Dessa historiska industriella anläggningar är en viktig del av Sveriges landsbygd och industriarv, ofta inbäddade i geografiska namn. \n3. **LAG**: Detta ord är mångfacetterat i Sverige. Det syftar på juridiska lagar, ett team ('sportlag'), men också 'lag på kaffet' – en folklig term för kaffesump som är djupt rotad i den svenska kaffekulturen. \n4. **BÅL**: Förknippas starkt med 'midsommarbål', en av Sveriges mest ikoniska traditioner. Dessutom har det betydelsen 'dryck' (som i 'punschbål') och 'kroppens stam' (torso), vilket ger ordet ett brett kulturellt spektrum från firande till anatomi. Dessa ord speglar svenska traditioner, historia och vardagsuttryck på ett sätt som enbart en svensk publik fullt ut kan uppskatta."
+  },
+  "groups": [
+    {
+      "category": "Ord med flera substantivbetydelser",
+      "words": [
+        "BANK",
+        "FIL",
+        "PLAN",
+        "FÄRG"
+      ],
+      "level": "yellow",
+      "explanation": "Alla ord i denna grupp är substantiv som har minst två helt distinkta betydelser inom substantivklassen. Exempelvis 'BANK' (finansinstitut, flodbank, slag)."
+    },
+    {
+      "category": "Homonymer med oväntade substantivbetydelser",
+      "words": [
+        "SAK",
+        "VAL",
+        "SKÄL",
+        "BOCK"
+      ],
+      "level": "green",
+      "explanation": "Dessa ord är också substantiv med flera betydelser, men där en av betydelserna kan vara mindre uppenbar eller mer abstrakt. Exempelvis 'SKÄL' (orsak, fjäll på fisk)."
+    },
+    {
+      "category": "Svenska ord med dolda historier",
+      "words": [
+        "JUL",
+        "BRUK",
+        "LAG",
+        "BÅL"
+      ],
+      "level": "blue",
+      "explanation": "Denna grupp består av substantiv som är homonymer med en stark koppling till svensk kultur, historia eller folkliga uttryck. Exempelvis 'LAG' (regelverk, team, sediment i dryck)."
+    },
+    {
+      "category": "Ord med flera ordklasser",
+      "words": [
+        "VASS",
+        "BÄR",
+        "KÖR",
+        "SKAL"
+      ],
+      "level": "purple",
+      "explanation": "Dessa ord är homografer som kan tillhöra olika ordklasser (substantiv, adjektiv, verb) i exakt samma form, vilket skapar en ordlek. Exempelvis 'VASS' (adjektiv: skarp, substantiv: vattenväxt)."
+    }
+  ]
+}

@@ -22,7 +22,7 @@ function initMultiplayerGame(
       .filter(g => g !== undefined), // Filter out invalid indices
     selectedWords: new Set(session.selected_words),
     status: session.status === 'completed' ? 'won' : 'playing',
-    shakingWords: new Set(),
+    shakingWords: new Set(session.shaking_words || []),
     sessionId,
     sessionCode,
     localPlayerNumber,
@@ -105,6 +105,7 @@ export function useMultiplayerGameState(
               ...prev,
               currentPlayer: session.current_player,
               selectedWords: new Set(session.selected_words),
+              shakingWords: new Set(session.shaking_words || []),
               completedGroups: session.completed_groups
                 .map(idx => wordSet.groups[idx])
                 .filter(g => g !== undefined), // Filter out invalid indices
@@ -143,6 +144,7 @@ export function useMultiplayerGameState(
   const updateRemoteState = useCallback(async (updates: {
     currentPlayer: 1 | 2;
     selectedWords: Set<string>;
+    shakingWords?: Set<string>;
     completedGroups: WordGroup[];
     status?: 'playing' | 'completed';
     winner?: 1 | 2 | null;
@@ -159,6 +161,7 @@ export function useMultiplayerGameState(
       const updateData: any = {
         current_player: updates.currentPlayer,
         selected_words: Array.from(updates.selectedWords),
+        shaking_words: updates.shakingWords ? Array.from(updates.shakingWords) : [],
         completed_groups: completedGroupIndices,
         last_activity: new Date().toISOString(),
       };
@@ -297,7 +300,7 @@ export function useMultiplayerGameState(
         const keptSelection = new Set(prev.selectedWords); // New Set to trigger React update
         const newCurrentPlayer: 1 | 2 = prev.currentPlayer === 1 ? 2 : 1;
 
-        // Clear shake after animation
+        // Clear shake after animation (both local and remote)
         setTimeout(() => {
           setState((current) => {
             if (!current) return current;
@@ -305,6 +308,14 @@ export function useMultiplayerGameState(
               ...current,
               shakingWords: new Set(),
             };
+          });
+
+          // Also clear shake in remote so both players see it stop
+          updateRemoteState({
+            currentPlayer: newCurrentPlayer,
+            selectedWords: keptSelection,
+            shakingWords: new Set(), // Clear shake
+            completedGroups: prev.completedGroups,
           });
         }, 500);
 
@@ -316,10 +327,11 @@ export function useMultiplayerGameState(
           isMyTurn: newCurrentPlayer === prev.localPlayerNumber,
         };
 
-        // Update remote
+        // Update remote with shake animation
         updateRemoteState({
           currentPlayer: newCurrentPlayer,
-          selectedWords: keptSelection, // Keep selected words in sync
+          selectedWords: keptSelection,
+          shakingWords, // Sync shake animation
           completedGroups: prev.completedGroups,
         });
 

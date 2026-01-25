@@ -1,0 +1,42 @@
+{
+  "valid": false,
+  "overall_quality": "poor",
+  "issues": [
+    {
+      "type": "hallucination",
+      "severity": "critical",
+      "description": "Ordet 'ÅLÅ' är inte ett giltigt svenskt ord enligt SAOL.",
+      "affected_groups": [
+        3
+      ],
+      "affected_words": [
+        "ÅLÅ"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Ordet 'ÅLÅ' i Grupp 3 måste ersättas med ett giltigt svenskt ord som uppfyller kategorin 'Börjar och slutar med samma bokstav'."
+  ],
+  "group_quality": [
+    {
+      "group_index": 0,
+      "quality": "good",
+      "comment": "En klassisk och tydlig grupp. 'DUVA' och 'SKATA' fungerar som goda villospår för den som inte direkt ser kategorin, men är inte för svåra."
+    },
+    {
+      "group_index": 1,
+      "quality": "excellent",
+      "comment": "En elegant kategori som utnyttjar både direkta associationer och den mer nyanserade betydelsen av 'vit' (vit lögn, vit söndag). 'LÖGN' och 'SÖNDAG' är utmärkta villospår."
+    },
+    {
+      "group_index": 2,
+      "quality": "good",
+      "comment": "Välkända karaktärer som bjuder på god allmänbildning. 'EMIL' och 'KARLSSON' fungerar som starka villospår och får spelaren att tänka på en bredare kategori av namn."
+    },
+    {
+      "group_index": 3,
+      "quality": "poor",
+      "comment": "Kategorin är 'Fair but Tough' med bra villospår som 'APA' (djur), 'ÖGA' (kroppsdelar) och 'IDA' (namn), men ordet 'ÅLÅ' är tyvärr en ren hallucination och därmed underkänns hela gruppen på grund av bristande validitet. Det är en brist som förstör pusslet helt."
+    }
+  ]
+}
