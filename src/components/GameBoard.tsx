@@ -2,6 +2,7 @@ import { GameState } from '../types';
 import { WordCard } from './WordCard';
 import { CompletedGroups } from './CompletedGroups';
 import { SourceAttribution } from './SourceAttribution';
+import { AlmostRightHint } from './AlmostRightHint';
 
 interface GameBoardProps {
   state: GameState;
@@ -104,6 +105,8 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onGiveUp, sour
       {/* Source attribution at bottom */}
       <SourceAttribution source={source} />
 
+      {/* "3 av 4 rätt!" hint */}
+      <AlmostRightHint show={state.showAlmostRightHint} />
     </div>
   );
 }

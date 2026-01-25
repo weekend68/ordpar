@@ -24,6 +24,7 @@ export interface GameState {
 
   // Animation
   shakingWords: Set<string>;
+  showAlmostRightHint: boolean;
 }
 
 // Multiplayer-specific state extension

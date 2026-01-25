@@ -30,6 +30,7 @@ export interface GameSession {
   current_player: 1 | 2;
   selected_words: string[];
   shaking_words: string[];
+  show_almost_right_hint: boolean;
   completed_groups: number[];
   moves_history: any[];
   status: 'waiting' | 'playing' | 'completed' | 'abandoned';

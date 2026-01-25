@@ -24,6 +24,7 @@ function initGame(wordSet: WordSet): GameState {
     selectedWords: new Set(),
     status: 'playing',
     shakingWords: new Set(),
+    showAlmostRightHint: false,
   };
 }
 
@@ -106,23 +107,34 @@ export function useGameState(wordSet: WordSet) {
           currentPlayer: prev.currentPlayer === 1 ? 2 : 1,
         };
       } else {
-        // Incorrect guess - shake but keep words selected for easy adjustment
+        // Incorrect guess - check if 3/4 are correct
         const shakingWords = new Set(prev.selectedWords);
-        const keptSelection = new Set(prev.selectedWords); // New Set to trigger React update
+        const keptSelection = new Set(prev.selectedWords);
 
-        // Clear shake after animation
+        // Check if 3 out of 4 words are in any group
+        let has3Correct = false;
+        for (const group of prev.groups) {
+          const correctCount = selectedArray.filter(w => group.words.includes(w)).length;
+          if (correctCount === 3) {
+            has3Correct = true;
+            break;
+          }
+        }
+
+        // Clear shake and hint after animation
         setTimeout(() => {
           setState((current) => ({
             ...current,
             shakingWords: new Set(),
+            showAlmostRightHint: false,
           }));
-        }, 500);
+        }, 2000);
 
         return {
           ...prev,
-          selectedWords: keptSelection, // KEEP selected for adjustment
+          selectedWords: keptSelection,
           shakingWords,
-          // Switch turn after incorrect guess
+          showAlmostRightHint: has3Correct,
           currentPlayer: prev.currentPlayer === 1 ? 2 : 1,
         };
       }

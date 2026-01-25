@@ -23,6 +23,7 @@ function initMultiplayerGame(
     selectedWords: new Set(session.selected_words),
     status: session.status === 'completed' ? 'won' : 'playing',
     shakingWords: new Set(session.shaking_words || []),
+    showAlmostRightHint: false,
     sessionId,
     sessionCode,
     localPlayerNumber,
@@ -95,10 +96,15 @@ export function useMultiplayerGameState(
           setState((prev) => {
             if (!prev) return prev;
 
+            const newIsMyTurn = session.current_player === localPlayerNumber;
+
             console.log('Updating state from Realtime:', {
               status: session.status,
               current_player: session.current_player,
               selected_words: session.selected_words,
+              localPlayerNumber,
+              newIsMyTurn,
+              prev_isMyTurn: prev.isMyTurn,
             });
 
             return {
@@ -106,10 +112,11 @@ export function useMultiplayerGameState(
               currentPlayer: session.current_player,
               selectedWords: new Set(session.selected_words),
               shakingWords: new Set(session.shaking_words || []),
+              showAlmostRightHint: session.show_almost_right_hint || false,
               completedGroups: session.completed_groups
                 .map(idx => wordSet.groups[idx])
                 .filter(g => g !== undefined), // Filter out invalid indices
-              isMyTurn: session.current_player === localPlayerNumber,
+              isMyTurn: newIsMyTurn,
               opponentConnected: session.status === 'playing' || session.status === 'completed',
               status: session.status === 'completed' ? 'won' : 'playing',
               winner: session.winner,
@@ -145,6 +152,7 @@ export function useMultiplayerGameState(
     currentPlayer: 1 | 2;
     selectedWords: Set<string>;
     shakingWords?: Set<string>;
+    showAlmostRightHint?: boolean;
     completedGroups: WordGroup[];
     status?: 'playing' | 'completed';
     winner?: 1 | 2 | null;
@@ -162,6 +170,7 @@ export function useMultiplayerGameState(
         current_player: updates.currentPlayer,
         selected_words: Array.from(updates.selectedWords),
         shaking_words: updates.shakingWords ? Array.from(updates.shakingWords) : [],
+        show_almost_right_hint: updates.showAlmostRightHint !== undefined ? updates.showAlmostRightHint : false,
         completed_groups: completedGroupIndices,
         last_activity: new Date().toISOString(),
       };
@@ -295,43 +304,57 @@ export function useMultiplayerGameState(
 
         return newState;
       } else {
-        // Incorrect guess - shake but keep words selected for easy adjustment
+        // Incorrect guess - check if 3/4 are correct
         const shakingWords = new Set(prev.selectedWords);
-        const keptSelection = new Set(prev.selectedWords); // New Set to trigger React update
+        const keptSelection = new Set(prev.selectedWords);
         const newCurrentPlayer: 1 | 2 = prev.currentPlayer === 1 ? 2 : 1;
 
-        // Clear shake after animation (both local and remote)
+        // Check if 3 out of 4 words are in any group
+        let has3Correct = false;
+        for (const group of prev.groups) {
+          const correctCount = selectedArray.filter(w => group.words.includes(w)).length;
+          if (correctCount === 3) {
+            has3Correct = true;
+            break;
+          }
+        }
+
+        // Clear shake and hint after animation (both local and remote)
         setTimeout(() => {
           setState((current) => {
             if (!current) return current;
             return {
               ...current,
               shakingWords: new Set(),
+              showAlmostRightHint: false,
             };
           });
 
-          // Also clear shake in remote so both players see it stop
+          // Clear shake and hint in remote
           updateRemoteState({
             currentPlayer: newCurrentPlayer,
             selectedWords: keptSelection,
-            shakingWords: new Set(), // Clear shake
+            shakingWords: new Set(),
+            showAlmostRightHint: false,
             completedGroups: prev.completedGroups,
           });
-        }, 500);
+        }, 2000);
 
         const newState = {
           ...prev,
-          selectedWords: keptSelection, // KEEP selected for adjustment
+          selectedWords: keptSelection,
           shakingWords,
+          showAlmostRightHint: has3Correct,
           currentPlayer: newCurrentPlayer,
           isMyTurn: newCurrentPlayer === prev.localPlayerNumber,
         };
 
-        // Update remote with shake animation
+        // Update remote with shake and hint
         updateRemoteState({
           currentPlayer: newCurrentPlayer,
           selectedWords: keptSelection,
-          shakingWords, // Sync shake animation
+          shakingWords,
+          showAlmostRightHint: has3Correct,
           completedGroups: prev.completedGroups,
         });
 
@@ -387,22 +410,14 @@ export function useMultiplayerGameState(
     setState((prev) => {
       if (!prev) return prev;
 
-      const newState = {
+      // Set status to given_up locally only (don't sync to DB)
+      // This prevents it from being overwritten by Realtime sync
+      return {
         ...prev,
         status: 'given_up' as const,
       };
-
-      // Update remote
-      updateRemoteState({
-        currentPlayer: prev.currentPlayer,
-        selectedWords: prev.selectedWords,
-        completedGroups: prev.completedGroups,
-        status: 'completed', // Mark as completed in DB
-      });
-
-      return newState;
     });
-  }, [updateRemoteState]);
+  }, []);
 
   return {
     state,
