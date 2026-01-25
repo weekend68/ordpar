@@ -17,84 +17,32 @@ interface RailwayResponse {
 
 const router = express.Router();
 
-// Generate a new word set
+// Generate a new word set - NOW USES DN DATA ONLY
 router.post('/generate', async (req, res) => {
   try {
-    const {
-      player_profile
-    } = req.body;
+    console.log(`\n📥 Received generate request - using DN data only`);
 
-    // Default profile if not provided
-    const defaultProfile: DifficultyProfile = {
-      ordförråd: 'medel',
-      ordlekar: 'medel',
-      kulturella_referenser: 'medel',
-      abstrakt_tänkande: 'medel'
-    };
+    // Get random DN word set (AI generation disabled)
+    const dnWordSet = await getRandomWordSet();
 
-    const profile = player_profile || defaultProfile;
-
-    console.log(`\n📥 Received generate request:`);
-    console.log(`   Profile:`, profile);
-
-    // Try to use cached word set first (fast, <1s)
-    const cached = await getRandomWordSet();
-
-    let groups;
-    let wordSetId;
-    let source: 'gemini' | 'dn' | 'claude' | null = null;
-
-    if (cached) {
-      console.log(`💾 Using cached word set: ${cached.id}`);
-      groups = cached.groups;
-      wordSetId = cached.id;
-      source = cached.source || null;
-    } else {
-      console.log(`🚂 No cache, calling Railway AI service...`);
-
-      // Feedback disabled - was causing quality degradation
-      // TODO: Re-enable when we have better quality control (threshold of 3+ ratings)
-      // const aggregatedFeedback = await aggregateGroupFeedback();
-      // const feedbackForPrompt = formatFeedbackForAI(aggregatedFeedback);
-      // console.log(`📊 Sending aggregated feedback to AI (${aggregatedFeedback.excellent.length + aggregatedFeedback.good.length + aggregatedFeedback.too_easy.length + aggregatedFeedback.bad.length} examples)`);
-
-      // Call Railway for generation (no timeout limit)
-      const railwayUrl = process.env.RAILWAY_AI_URL || 'http://localhost:3002';
-      const response = await fetch(`${railwayUrl}/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          player_profile: profile,
-          feedback: '' // No feedback for now
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Railway AI service error: ${response.status}`);
-      }
-
-      const data = await response.json() as RailwayResponse;
-      if (!data.success || !data.word_set) {
-        throw new Error(data.error || 'Railway generation failed');
-      }
-
-      groups = data.word_set.groups;
-      wordSetId = data.word_set.id;
-      source = data.word_set.source || 'gemini'; // Default to gemini for new AI generations
+    if (!dnWordSet) {
+      throw new Error('No DN word sets available in database');
     }
+
+    console.log(`📰 Using DN word set: ${dnWordSet.id} (published: ${dnWordSet.created_at})`);
 
     res.json({
       success: true,
       word_set: {
-        id: wordSetId,
-        groups,
-        source,
-        created_at: new Date().toISOString()
+        id: dnWordSet.id,
+        groups: dnWordSet.groups,
+        source: 'dn',
+        created_at: dnWordSet.created_at
       }
     });
 
   } catch (error) {
-    console.error('❌ Error generating word set:', error);
+    console.error('❌ Error getting word set:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

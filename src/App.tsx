@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generateWordSet, submitFeedback } from './services/api';
+import { generateWordSet } from './services/api';
 import { useGameState } from './hooks/useGameState';
 import { GameBoard } from './components/GameBoard';
 import { GameResult } from './components/GameResult';
 import { LoadingScreen } from './components/LoadingScreen';
-import { FeedbackModal, GroupRating } from './components/FeedbackModal';
 import { WordSet } from './types';
 
 function App() {
@@ -14,7 +13,6 @@ function App() {
   const [source, setSource] = useState<'gemini' | 'dn' | 'claude' | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
 
   // Load new word set (wrapped in useCallback to prevent infinite loops)
   const loadNewWordSet = useCallback(async () => {
@@ -53,35 +51,11 @@ function App() {
     id: 'loading',
     groups: [],
   };
-  const { state, toggleWordSelection, guessGroup, clearSelection } =
+  const { state, toggleWordSelection, guessGroup, clearSelection, giveUp } =
     useGameState(wordSet || dummyWordSet);
 
   // ALL hooks must be before conditional returns - Rules of Hooks
-  const handlePlayAgain = useCallback(() => {
-    // Show feedback modal first
-    setShowFeedback(true);
-  }, []);
-
-  const handleFeedbackSubmit = useCallback(async (ratings: Map<number, GroupRating>) => {
-    if (!wordSet) return;
-
-    try {
-      await submitFeedback(wordSet.id, ratings);
-    } catch (error) {
-      console.error('Failed to submit feedback:', error);
-      // Continue anyway - don't block user from playing
-    }
-
-    setShowFeedback(false);
-    loadNewWordSet();
-  }, [wordSet, loadNewWordSet]);
-
-  const handleFeedbackSkip = useCallback(() => {
-    setShowFeedback(false);
-    loadNewWordSet();
-  }, [loadNewWordSet]);
-
-  const handleQuit = useCallback(() => {
+  const handleBackToLobby = useCallback(() => {
     navigate('/');
   }, [navigate]);
 
@@ -116,24 +90,16 @@ function App() {
         onWordClick={toggleWordSelection}
         onGuess={guessGroup}
         onClear={clearSelection}
-        onQuit={handleQuit}
+        onGiveUp={giveUp}
         source={source}
       />
 
-      {state.status === 'won' && !showFeedback && (
+      {(state.status === 'won' || state.status === 'given_up') && (
         <GameResult
           status={state.status}
           groups={state.groups}
           completedGroups={state.completedGroups}
-          onPlayAgain={handlePlayAgain}
-        />
-      )}
-
-      {showFeedback && wordSet && (
-        <FeedbackModal
-          groups={wordSet.groups}
-          onSubmit={handleFeedbackSubmit}
-          onSkip={handleFeedbackSkip}
+          onPlayAgain={handleBackToLobby}
         />
       )}
     </div>

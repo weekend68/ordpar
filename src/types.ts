@@ -20,7 +20,7 @@ export interface GameState {
   selectedWords: Set<string>;
 
   // Status
-  status: 'playing' | 'won';
+  status: 'playing' | 'won' | 'given_up';
 
   // Animation
   shakingWords: Set<string>;

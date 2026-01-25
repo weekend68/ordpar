@@ -147,6 +147,13 @@ export function useGameState(wordSet: WordSet) {
     setState(initGame(wordSet));
   }, [wordSet]);
 
+  const giveUp = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      status: 'given_up',
+    }));
+  }, []);
+
   return {
     state,
     toggleWordSelection,
@@ -154,5 +161,6 @@ export function useGameState(wordSet: WordSet) {
     passTurn,
     clearSelection,
     resetGame,
+    giveUp,
   };
 }

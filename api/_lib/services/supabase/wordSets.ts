@@ -65,33 +65,30 @@ export async function getWordSet(id: string): Promise<WordSetRecord | null> {
 }
 
 /**
- * Get a random word set from cache (for quick serving, no user tracking)
- * Only returns AI-generated word sets (created today), no DN imports
+ * Get a random word set from DN imports only (AI generation disabled)
  */
 export async function getRandomWordSet(): Promise<WordSetRecord | null> {
   const supabase = getSupabaseClient();
 
-  // Only get AI-generated word sets from today (2026-01-23 15:00 onwards)
-  const aiGenerationStartDate = '2026-01-23T15:00:00Z';
-
+  // Only get DN-imported word sets (source='dn')
   const { data, error } = await supabase
     .from('word_sets')
     .select('*')
-    .gte('created_at', aiGenerationStartDate)
+    .eq('source', 'dn')
     .order('times_used', { ascending: true })
-    .limit(50); // Increased from 20 to 50 for more variety
+    .limit(50); // Pool of 50 least-used DN sets
 
   if (error) {
-    console.error('❌ Failed to get AI word sets:', error);
+    console.error('❌ Failed to get DN word sets:', error);
     return null;
   }
 
   if (!data || data.length === 0) {
-    console.log('⚠️ No AI word sets available, need to generate new ones');
+    console.log('⚠️ No DN word sets available in database');
     return null;
   }
 
-  // Pick a random one from the least-used AI sets
+  // Pick a random one from the least-used DN sets
   const randomIndex = Math.floor(Math.random() * data.length);
   const selectedSet = data[randomIndex];
 
@@ -101,7 +98,7 @@ export async function getRandomWordSet(): Promise<WordSetRecord | null> {
     .update({ times_used: selectedSet.times_used + 1 })
     .eq('id', selectedSet.id);
 
-  console.log(`📊 Using word set ${selectedSet.id} (times_used: ${selectedSet.times_used} -> ${selectedSet.times_used + 1})`);
+  console.log(`📰 Using DN word set ${selectedSet.id} (times_used: ${selectedSet.times_used} -> ${selectedSet.times_used + 1})`);
 
   return selectedSet;
 }

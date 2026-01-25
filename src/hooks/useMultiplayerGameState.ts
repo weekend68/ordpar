@@ -371,6 +371,27 @@ export function useMultiplayerGameState(
     });
   }, [updateRemoteState]);
 
+  const giveUp = useCallback(() => {
+    setState((prev) => {
+      if (!prev) return prev;
+
+      const newState = {
+        ...prev,
+        status: 'given_up' as const,
+      };
+
+      // Update remote
+      updateRemoteState({
+        currentPlayer: prev.currentPlayer,
+        selectedWords: prev.selectedWords,
+        completedGroups: prev.completedGroups,
+        status: 'completed', // Mark as completed in DB
+      });
+
+      return newState;
+    });
+  }, [updateRemoteState]);
+
   return {
     state,
     error,
@@ -378,5 +399,6 @@ export function useMultiplayerGameState(
     guessGroup,
     passTurn,
     clearSelection,
+    giveUp,
   };
 }

@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc && cp -r src/prompts dist/",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "test:generator": "tsx test-generator-only.ts",
+    "test:validator": "tsx test-validator-only.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",

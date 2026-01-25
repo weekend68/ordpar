@@ -46,6 +46,17 @@ export function parseJSON<T>(response: string): T {
   } catch (e) {
     // Strip markdown if present
     const cleaned = response.replace(/```json\n?|\n?```/g, '').trim();
-    return JSON.parse(cleaned);
+
+    try {
+      return JSON.parse(cleaned);
+    } catch (e2) {
+      // Debug output
+      console.error('❌ Failed to parse JSON response');
+      console.error('Raw response (first 1000 chars):');
+      console.error(response.substring(0, 1000));
+      console.error('\nCleaned response (first 1000 chars):');
+      console.error(cleaned.substring(0, 1000));
+      throw new Error(`JSON parse failed: ${e2 instanceof Error ? e2.message : 'Unknown error'}`);
+    }
   }
 }

@@ -37,8 +37,8 @@ export async function generateWordSet(
   const parsed = parseJSON<GeneratedWordSet>(response);
 
   // Validate structure
-  if (!parsed.groups || parsed.groups.length !== 6) {
-    throw new Error(`Invalid generation: expected 6 groups, got ${parsed.groups?.length || 0}`);
+  if (!parsed.groups || parsed.groups.length !== 4) {
+    throw new Error(`Invalid generation: expected 4 groups, got ${parsed.groups?.length || 0}`);
   }
 
   console.log(`✅ Generated ${parsed.groups.length} groups`);

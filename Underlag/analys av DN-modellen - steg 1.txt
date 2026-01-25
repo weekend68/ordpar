@@ -1,0 +1,44 @@
+Här är en sammanfattning av vår analys och de slutsatser vi dragit för att lyfta kvaliteten från "AI-genererat skräp" till "DN-nivå". Du kan använda detta som ett ramverk för din dokumentation och framtida prompt-teknik.
+
+---
+
+## 1. Problemanalys: "Gemini-fällan"
+
+Vi har identifierat att en oinstruerad AI tenderar att välja den **mekaniska vägen** framför den **semantiska**.
+
+* **Mekanisk logik:** Kategorier som "Baklängesord", "Innehåller bokstaven X" eller "Slutar på -sten". Detta är enkelt för en dator men saknar "aha-upplevelse" för människan.
+* **Falsk variation:** AI:n genererar många set som ser olika ut men som bygger på identiska logiska mallar (t.ex. 14 set med baklängesord i din CSV).
+* **Hallucinerad fakta:** Vid kulturella referenser (t.ex. Astrid Lindgren) slarvar AI:n med stavning (PIPPA) eller hittar på kopplingar som inte existerar.
+
+## 2. Den lingvistiska guldstandarden (DN-modellen)
+
+Genom att analysera dina "Rating 4"-grupper har vi identifierat att högkvalitativa gåtor bygger på specifika lingvistiska fenomen snarare än enkla listor:
+
+* **Polysemi (Mångtydighet):** Att använda ord som har helt olika betydelser i olika kontext. Spelaren ska "låsa sig" vid betydelse A, medan gruppen bygger på betydelse B.
+* **Katakres (Formmetaforer):** Att använda ord för kroppsdelar för att beskriva döda ting (t.ex. *Ben* på ett bord, *Hals* på en flaska, *Fot* på ett berg).
+* **Radierande Polysemi:** Ord som strålar ut från en kärna men hamnar i olika världar (t.ex. *Krona* som valuta, huvudbonad och trädtopp).
+* **Metonymi (Namnkopplingar):** Att använda ett ord som inte *är* saken, men som är en del av ett fastställt namn (t.ex. *Hesa* Fredrik).
+
+## 3. Strategi för "Generatorn"
+
+För att tvinga AI:n att arbeta mer som en mänsklig redaktör krävs följande i instruktionerna:
+
+* **Förbud mot mekanik:** Svartlista uttryckligen baklängesord, palindrom och enkla suffix/prefix-listor.
+* **Krav på "Pivot-ord":** Instruera AI:n att minst ett ord i varje grupp ska vara ett "kamouflage-ord" som vid första anblick verkar passa i en annan (icke-existerande) kategori.
+* **Dominant betydelse-test:** AI:n måste utmanas att inte använda för svaga kopplingar (som *EN* i betydelsen träd), om inte de andra orden i gruppen är extremt starka.
+
+## 4. Strategi för "Validatorn" (Gränskontrollen)
+
+Validatorn ska inte bara bekräfta att kategorin finns, utan agera "Djävulens advokat":
+
+* **Simulering:** Den måste faktiskt "prov-vända" ord för att se om de blir riktiga svenska ord (SAOL-standard).
+* **Faktakontroll:** Den ska verifiera egennamn och stavning mot en intern databas (ingen mer "PIPPA").
+* **Överlappsanalys:** Den måste kontrollera om ett ord i en "enkel" grupp råkar sabotera en "svår" grupp genom att passa lika bra där.
+
+## 5. Slutsatser om svårighetsgrad
+
+* **Rating 1 (Kunskapsväggen):** Undvik pussel som kräver nischad faktakunskap (t.ex. gamla namn på länder). Det ger ingen "aha-upplevelse", bara en känsla av att man är okunnig.
+* **Rating 4 (Elegans):** Det perfekta pusslet använder ord som alla kan, men i en kontext man inte förväntade sig. Svårigheten ska ligga i **tänket**, inte i **ordförrådet**.
+
+---
+

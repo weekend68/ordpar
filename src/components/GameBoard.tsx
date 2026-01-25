@@ -8,12 +8,12 @@ interface GameBoardProps {
   onWordClick: (word: string) => void;
   onGuess: () => void;
   onClear: () => void;
-  onQuit?: () => void; // Optional quit handler
+  onGiveUp: () => void; // Give up and show answer
   source?: 'gemini' | 'dn' | 'claude' | null;
   isMyTurn?: boolean; // For multiplayer - default true for single player
 }
 
-export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source, isMyTurn = true }: GameBoardProps) {
+export function GameBoard({ state, onWordClick, onGuess, onClear, onGiveUp, source, isMyTurn = true }: GameBoardProps) {
   const {
     allWords,
     completedGroups,
@@ -28,7 +28,18 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
   const wordsInGrid = allWords.filter((w) => !completedWords.has(w));
 
   return (
-    <div className="max-w-[430px] mx-auto px-3 py-2">
+    <div className="max-w-[430px] mx-auto px-3 py-2 relative">
+      {/* PAUSE OVERLAY - when opponent's turn */}
+      {!isMyTurn && (
+        <div className="absolute inset-0 z-40 flex items-center justify-center bg-black bg-opacity-70 rounded-2xl">
+          <div className="text-center px-6">
+            <div className="text-6xl mb-4 animate-pulse">⏸️</div>
+            <h2 className="text-3xl font-bold text-white mb-2">VÄNTA</h2>
+            <p className="text-xl text-gray-300">Motståndarens tur</p>
+          </div>
+        </div>
+      )}
+
       {/* Header - compact */}
       <div className="mb-2.5 text-center">
         <h1 className="text-3xl font-semibold text-white">
@@ -84,17 +95,13 @@ export function GameBoard({ state, onWordClick, onGuess, onClear, onQuit, source
           >
             Rensa markering
           </button>
-          {onQuit && (
-            <>
-              <span className="text-gray-700">•</span>
-              <button
-                onClick={onQuit}
-                className="font-normal text-gray-400 hover:text-white transition-colors cursor-pointer"
-              >
-                Ge upp
-              </button>
-            </>
-          )}
+          <span className="text-gray-700">•</span>
+          <button
+            onClick={onGiveUp}
+            className="font-normal text-gray-400 hover:text-white transition-colors cursor-pointer"
+          >
+            Ge upp
+          </button>
         </div>
       </div>
 

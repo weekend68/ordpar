@@ -3,9 +3,8 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useMultiplayerGameState } from '../hooks/useMultiplayerGameState';
 import { GameBoard } from '../components/GameBoard';
+import { GameResult } from '../components/GameResult';
 import { LoadingScreen } from '../components/LoadingScreen';
-import { FeedbackModal, GroupRating } from '../components/FeedbackModal';
-import { submitFeedback } from '../services/api';
 import { WordSet } from '../types';
 
 export function MultiplayerGame() {
@@ -17,8 +16,6 @@ export function MultiplayerGame() {
   const [source, setSource] = useState<'gemini' | 'dn' | 'claude' | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showWinModal, setShowWinModal] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
 
   // Get player number from query params
   const playerNumberStr = searchParams.get('player');
@@ -90,7 +87,7 @@ export function MultiplayerGame() {
   }, [sessionCode]);
 
   // Initialize multiplayer game state
-  const { state, error: gameError, toggleWordSelection, guessGroup, clearSelection } =
+  const { state, error: gameError, toggleWordSelection, guessGroup, clearSelection, giveUp } =
     useMultiplayerGameState(
       sessionCode || '',
       wordSet || { id: '', groups: [] },
@@ -99,41 +96,9 @@ export function MultiplayerGame() {
 
   // No longer needed - Realtime should handle this
 
-  // Show win modal when game is won
-  useEffect(() => {
-    if (state?.status === 'won' && !showWinModal && !showFeedback) {
-      setShowWinModal(true);
-    }
-  }, [state?.status, showWinModal, showFeedback]);
-
-  // Handle feedback submission (Player 1 only)
-  const handleFeedbackSubmit = useCallback(async (ratings: Map<number, GroupRating>) => {
-    if (!wordSet) return;
-
-    try {
-      await submitFeedback(wordSet.id, ratings);
-    } catch (error) {
-      console.error('Failed to submit feedback:', error);
-    }
-
-    setShowFeedback(false);
-    // Don't show modal again - feedback is done
-  }, [wordSet]);
-
-  const handleFeedbackSkip = useCallback(() => {
-    setShowFeedback(false);
-    setShowWinModal(true);
-  }, []);
-
-  const handleQuit = useCallback(() => {
+  const handleBackToLobby = useCallback(() => {
     navigate('/');
   }, [navigate]);
-
-  // Player 1 gets feedback modal, Player 2 just sees win screen
-  const handleShowFeedback = useCallback(() => {
-    setShowWinModal(false);
-    setShowFeedback(true);
-  }, []);
 
   // Check for disconnect (last activity > 2 minutes ago)
   // Opponent is connected if status is 'playing' or 'completed'
@@ -223,50 +188,18 @@ export function MultiplayerGame() {
         onWordClick={toggleWordSelection}
         onGuess={guessGroup}
         onClear={clearSelection}
-        onQuit={handleQuit}
+        onGiveUp={giveUp}
         source={source}
         isMyTurn={state.isMyTurn}
       />
 
-      {/* Win Modal */}
-      {showWinModal && !showFeedback && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center">
-            <div className="text-6xl mb-4">🎉</div>
-            <h2 className="text-3xl font-bold text-green-600 mb-4">
-              Ni vann tillsammans!
-            </h2>
-            <p className="text-gray-700 mb-6">
-              Båda spelarna samarbetade för att hitta alla fyra grupper!
-            </p>
-
-            <div className="space-y-3">
-              <button
-                onClick={() => navigate('/')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors"
-              >
-                Tillbaka till lobby
-              </button>
-
-              {localPlayerNumber === 1 && (
-                <button
-                  onClick={handleShowFeedback}
-                  className="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-xl transition-colors"
-                >
-                  Ge feedback på ordset
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Feedback Modal (Player 1 only) */}
-      {showFeedback && wordSet && localPlayerNumber === 1 && (
-        <FeedbackModal
+      {/* Game Result */}
+      {(state.status === 'won' || state.status === 'given_up') && wordSet && (
+        <GameResult
+          status={state.status}
           groups={wordSet.groups}
-          onSubmit={handleFeedbackSubmit}
-          onSkip={handleFeedbackSkip}
+          completedGroups={state.completedGroups}
+          onPlayAgain={handleBackToLobby}
         />
       )}
     </div>

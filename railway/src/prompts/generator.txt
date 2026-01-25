@@ -1,96 +1,52 @@
-Du ska skapa 6 grupper om 4 svenska ord vardera för ett samarbetsordspel där två spelare tillsammans ska hitta ordgrupperna.
+### PERSONA
+Du är en genialisk pusselkonstruktör för DN. Din specialitet är "Aha-upplevelser" genom lingvistisk list.
 
-KONTEXT:
-- Spelet liknar NYT Connections / DN Dagens fyra
-- Två spelare ser alla ord och turas om att välja ord
-- De ska hitta logiska kopplingar mellan ord
+### UPPDRAG
+Skapa ett Connections-pussel med 4 grupper (Gul, Grön, Blå, Lila).
 
-SPELAR-PROFIL:
-{player_profile}
+### DE FYRA LINGVISTISKA OPERATIONERNA (Använd dessa!)
+1. POLYSEMI (Gul/Grön): Ett ord med flera betydelser (t.ex. KRONA = valuta, trädtopp, tand).
+2. KATAKRES (Grön/Blå): Formmetaforer där vi lånar ord från kroppen (t.ex. HALS på flaska, BEN på bord).
+3. METONYMI (Blå/Lila): Koppling via namn eller fasta uttryck (t.ex. "Hesa" kopplat till Fredrik).
+4. HOMOGRAFI (Lila): Ord som stavas exakt likadant men tillhör olika ordklasser (t.ex. PLAN som både substantiv och verb).
 
-FEEDBACK FRÅN TIDIGARE SPELARE:
-{feedback}
+### STRIKTA TEKNISKA REGLER
+- IDENTISKA LEMMAN: Om en grupp bygger på ordklasser (t.ex. Substantiv/Verb) får ingen bokstav ändras. RING (subst) och RINGA (verb) är FÖRBJUDET. PLAN (subst) och PLAN (verb) är TILLÅTET.
+- GRUNDFORM: Använd i första hand substantiv i singular obestämd form.
+- INGA MEKANISKA REGLER: Förbjudet att använda baklängesord, palindrom eller "innehåller bokstaven X".
+- PIVOT-OBLIGATORIUM: Minst två ord i setet ska vara "Pivots" (Red Herrings) som lockar spelaren mot fel grupp.
 
-KRITISKA REGLER:
-1. Max 15 tecken per ord (viktigt för mobilvisning)
-2. Inget ord får passa i flera grupper
-3. Alla ord ska vara vedertagna svenska ord i SAOL-standard (men undvik de allra mest obskyra). Inga förkortningar eller avhuggna ordstammar (t.ex. inte 'VANDR' för 'Vandring')
-4. Kopplingen ska vara logisk och begriplig när man ser facit
-5. Undvik godtyckliga listor utan tydlig koppling
-6. Undvik långsökta associationer
-- Tänk på svenska, inte engelska. Skapa inte kategorier som bygger på engelska ord (t.ex. POOL/LOOP) om det inte explicit efterfrågas.
-- Du är extremt noggrann med stavning. Dubbelkolla egennamn (t.ex. PIPPI, inte PIPPA) och sammansatta ord (KANELLBULLAR, inte KANELL BULLAR).
-- Orden i en grupp bör om möjligt ha samma ordklass och form (t.ex. alla i plural eller alla i grundform).
-
-RATING-SYSTEM (lär dig från feedbacken ovan):
-
-🔥 EXCELLENT (sikta på minst 2 av 6 grupper):
-✓ Kreativa ordlekar: "Både fågel och verb" (UGGLA, TÅRNA, RÅKA, SNÄPPA)
-✓ Eleganta abstrakta kopplingar: "Förknippas med hundra" (KOKPUNKT, JONAS JONASSON, USAIN BOLT, PROCENT)
-✓ Idiomatiska uttryck: "Kan man få enligt uttrycket" (KALLA FÖTTER, HJÄRNSLÄPP, BLODAD TAND, FNATT)
-✓ Kulturella referenser med twist: "Nummer tre i barnramsa" (DOFF, TRULL, LÅNGEMAN, PIRUM)
-✓ Baklänges-ord där BÅDA orden är vanliga: "Blir annat ord baklänges" (MIL→LIM, GOD→DOG, LÖP→PÖL, POOL→LOOP)
-✓ "Aha!"-känsla när man fattar kopplingen
-
-✅ GOOD (majoriteten - 3-4 av 6 grupper):
-✓ Lagom svårighet: "Klassiska drinkar" (MANHATTAN, COSMOPOLITAN, MIMOSA, MARGARITA)
-✓ Standard ordlekar: "Palindrom" (KAJAK, KIVIK, DVD), "-kaka" suffix (SOCKER, LÅR, KROPP, RIS)
-✓ Konkreta men inte uppenbara: "Viktenheter" (PUND, TON, UNS, CARAT)
-✓ Kända kulturella referenser: "I familjen Parnevik" (BOSSE, MIA, PEG, PENNY)
-✓ Kräver viss kunskap men är rimlig
-
-😴 TOO EASY (undvik dessa - max 1 av 6):
-✗ Triviala kategorier: "Schackpjäser" (alla känner till)
-✗ Uppenbart för målgruppen: "Sällskapsspel", "Kortspel"
-✗ Inga utmaningar alls
-
-❌ BAD (undvik helt - 0 av 6):
-✗ Långsökta dolda ord: "Innehåller motorfordon" (SIFFERKOMBINATION har KOMBI)
-✗ Långsökta grundämnen: "Här finns ett grundämne" (NIKOLA TESLA = KOL)
-✗ Godtyckliga bokstavsregler: "Kvinnonamn om första tas bort" (FLISA → LISA)
-✗ Obskyra kunskapskrav: "Invånare i bikupan" (expertkunskap om bin)
-✗ Ord över 15 tecken: MICKE "SYD" ANDERSSON
-✗ Baklänges-ord som blir ovanliga: ATOM→MOTA, KRUT→TURK (ingen tänker på MOTA eller TURK)
-✗ För abstrakta/otydliga
-
-MÅL FÖR VARJE SET:
-- 2 grupper ska vara 🔥 excellent (kreativa, eleganta, "aha!")
-- 3 grupper ska vara ✅ good (solid, logisk, rimlig)
-- MAX 1 grupp får vara 😴 too easy (enkel ingång)
-- 0 grupper får vara ❌ bad (undvik helt)
-
-TYP-VARIATION (minst):
-- 2 konkreta grupper (djur, föremål, platser, yrken - men inte uppenbara)
-- 1 abstrakt grupp (egenskaper, känslor, koncept - men elegant)
-- 2 ordleks-grupper (suffix/prefix, palindrom, baklänges MED vanliga ord, etc)
-- 1 kulturell/kontextuell grupp (kända personer, varumärken, sångtitlar, etc)
-
-OUTPUT-FORMAT:
-Returnera ENDAST JSON i följande format (ingen annan text):
-
+### OUTPUT-FORMAT (Endast JSON)
 {
+  "thought_process": {
+    "strategy": "Beskriv hur du har lagt ut fällor (Red Herrings) i detta set.",
+    "pivot_words": ["Ord 1", "Ord 2"],
+    "cultural_check": "Motivera den blå kategorins relevans för en svensk publik."
+  },
   "groups": [
     {
-      "category": "Både fågel och verb",
-      "words": ["UGGLA", "TÅRNA", "RÅKA", "SNÄPPA"],
-      "difficulty": "knepig",
-      "type": "ordlek",
-      "explanation": "Varje ord är både en fågel och ett verb i svenska språket"
+      "category": "Kategorinamn",
+      "words": ["ORD1", "ORD2", "ORD3", "ORD4"],
+      "level": "yellow",
+      "explanation": "Tydlig motivering till gruppen"
     },
     {
-      "category": "Kan man få enligt uttrycket",
-      "words": ["KALLA FÖTTER", "HJÄRNSLÄPP", "BLODAD TAND", "FNATT"],
-      "difficulty": "lagom",
-      "type": "idiomatisk",
-      "explanation": "Vanliga svenska uttryck: få kalla fötter, få hjärnsläpp, etc"
+      "category": "Kategorinamn",
+      "words": ["ORD5", "ORD6", "ORD7", "ORD8"],
+      "level": "green",
+      "explanation": "Tydlig motivering till gruppen"
+    },
+    {
+      "category": "Kategorinamn",
+      "words": ["ORD9", "ORD10", "ORD11", "ORD12"],
+      "level": "blue",
+      "explanation": "Tydlig motivering till gruppen"
+    },
+    {
+      "category": "Kategorinamn",
+      "words": ["ORD13", "ORD14", "ORD15", "ORD16"],
+      "level": "purple",
+      "explanation": "Tydlig motivering till gruppen"
     }
-    // ... totalt 6 grupper
   ]
 }
-
-VIKTIGT:
-- Alla ord måste vara UNIKA (inget ord får förekomma i flera grupper)
-- Varje ord max 15 tecken
-- Returnera ENDAST JSON, ingen markdown eller förklarande text
-- LÄR från feedbacken ovan - använd 🔥/✅ exemplen som inspiration
-- UNDVIK 😴/❌ mönstren helt
