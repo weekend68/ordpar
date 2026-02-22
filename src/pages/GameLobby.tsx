@@ -34,7 +34,7 @@ export function GameLobby() {
       }
 
       // 4. Create game session with shuffled words
-      const { data: session, error: sessionError } = await supabase
+      const { error: sessionError } = await supabase
         .from('game_sessions')
         .insert({
           session_code: sessionCode,
