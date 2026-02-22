@@ -7,6 +7,7 @@ interface GameResultProps {
   onPlayAgain: () => void;
   isMultiplayer: boolean;
   playAgainLabel?: string;
+  onExit?: () => void;
 }
 
 export function GameResult({
@@ -16,6 +17,7 @@ export function GameResult({
   onPlayAgain,
   isMultiplayer,
   playAgainLabel = 'Tillbaka till startsidan',
+  onExit,
 }: GameResultProps) {
   const isWon = status === 'won';
 
@@ -66,12 +68,22 @@ export function GameResult({
           })}
         </div>
 
-        <button
-          onClick={onPlayAgain}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
-        >
-          {playAgainLabel}
-        </button>
+        <div className="space-y-2">
+          <button
+            onClick={onPlayAgain}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+          >
+            {playAgainLabel}
+          </button>
+          {onExit && (
+            <button
+              onClick={onExit}
+              className="w-full bg-gray-700 hover:bg-gray-600 text-gray-300 font-semibold py-3 px-8 rounded-lg transition-colors"
+            >
+              Avsluta
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

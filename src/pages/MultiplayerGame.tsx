@@ -256,6 +256,7 @@ export function MultiplayerGame() {
           groups={wordSet.groups}
           completedGroups={state.completedGroups}
           onPlayAgain={handlePlayAgain}
+          onExit={() => navigate('/')}
           isMultiplayer={true}
           playAgainLabel="Spela igen"
         />
