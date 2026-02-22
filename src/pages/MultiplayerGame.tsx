@@ -95,10 +95,6 @@ export function MultiplayerGame() {
       localPlayerNumber
     );
 
-  const handleBackToLobby = useCallback(() => {
-    navigate('/');
-  }, [navigate]);
-
   const isCreatingRematch = useRef(false);
 
   const handlePlayAgain = useCallback(async () => {
@@ -106,22 +102,31 @@ export function MultiplayerGame() {
     isCreatingRematch.current = true;
 
     try {
-      // 1. Generate new word set
-      const { id: wordSetId, groups } = await generateWordSet({});
+      // Check if the other player already initiated a rematch
+      const { data: current } = await supabase
+        .from('game_sessions')
+        .select('rematch_session_code')
+        .eq('session_code', sessionCode)
+        .single();
 
-      // 2. Generate new session code
+      if (current?.rematch_session_code) {
+        // Other player was first – join their session as player 2
+        navigate(`/game/${current.rematch_session_code}?player=2`);
+        return;
+      }
+
+      // We're first – create new session
+      const { id: wordSetId, groups } = await generateWordSet({});
       const { data: codeData, error: codeError } = await supabase.rpc('generate_session_code');
       if (codeError) throw codeError;
       const newCode = codeData as string;
 
-      // 3. Shuffle words
       const allWords = groups.flatMap(g => g.words);
       for (let i = allWords.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
       }
 
-      // 4. Create new session
       const { error: sessionError } = await supabase
         .from('game_sessions')
         .insert({
@@ -134,19 +139,24 @@ export function MultiplayerGame() {
         });
       if (sessionError) throw sessionError;
 
-      // 5. Set rematch code on old session so player 2 gets notified
       await supabase
         .from('game_sessions')
         .update({ rematch_session_code: newCode })
         .eq('session_code', sessionCode);
 
-      // 6. Navigate to new session as player 1
       navigate(`/game/${newCode}?player=1`);
     } catch (err) {
       console.error('Failed to create rematch:', err);
       isCreatingRematch.current = false;
     }
   }, [sessionCode, navigate]);
+
+  // Auto-navigate when the other player initiates rematch
+  useEffect(() => {
+    if (rematchSessionCode && !isCreatingRematch.current) {
+      navigate(`/game/${rematchSessionCode}?player=2`);
+    }
+  }, [rematchSessionCode, navigate]);
 
   const isOpponentConnected = state && (state.status === 'won' || state.opponentConnected);
 
@@ -245,23 +255,10 @@ export function MultiplayerGame() {
           status={state.status}
           groups={wordSet.groups}
           completedGroups={state.completedGroups}
-          onPlayAgain={localPlayerNumber === 1 ? handlePlayAgain : handleBackToLobby}
+          onPlayAgain={handlePlayAgain}
           isMultiplayer={true}
-          playAgainLabel={localPlayerNumber === 1 ? 'Spela igen' : 'Tillbaka till startsidan'}
+          playAgainLabel="Spela igen"
         />
-      )}
-
-      {/* Rematch banner for player 2 */}
-      {rematchSessionCode && localPlayerNumber === 2 && (state.status === 'won' || state.status === 'given_up') && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-blue-600 text-white rounded-2xl px-6 py-4 shadow-2xl flex items-center gap-4">
-          <span className="font-semibold">Motspelaren vill spela igen!</span>
-          <button
-            onClick={() => navigate(`/game/${rematchSessionCode}?player=2`)}
-            className="bg-white text-blue-600 font-bold px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors"
-          >
-            Joina!
-          </button>
-        </div>
       )}
     </div>
   );
