@@ -61,7 +61,6 @@ export function useMultiplayerGameState(
         sessionIdRef.current = data.id;
         setState(initMultiplayerGame(wordSet, data.id, sessionCode, localPlayerNumber, data));
       } catch (err) {
-        console.error('Failed to load session:', err);
         setError(err instanceof Error ? err.message : 'Failed to load session');
       }
     }
@@ -72,8 +71,6 @@ export function useMultiplayerGameState(
   // Subscribe to real-time updates
   useEffect(() => {
     if (!sessionIdRef.current) return;
-
-    console.log('🔌 Setting up Realtime subscription for:', sessionCode);
 
     const channel = supabase
       .channel(`game:${sessionCode}:${Date.now()}`) // Unique channel per mount
@@ -86,8 +83,6 @@ export function useMultiplayerGameState(
           filter: `session_code=eq.${sessionCode}`,
         },
         (payload) => {
-          console.log('🔄 Received real-time update:', payload);
-
           // Don't skip echo - just update state
           // The issue is that we need to see ALL updates
 
@@ -97,15 +92,6 @@ export function useMultiplayerGameState(
             if (!prev) return prev;
 
             const newIsMyTurn = session.current_player === localPlayerNumber;
-
-            console.log('Updating state from Realtime:', {
-              status: session.status,
-              current_player: session.current_player,
-              selected_words: session.selected_words,
-              localPlayerNumber,
-              newIsMyTurn,
-              prev_isMyTurn: prev.isMyTurn,
-            });
 
             return {
               ...prev,
@@ -130,19 +116,11 @@ export function useMultiplayerGameState(
           }, 100);
         }
       )
-      .subscribe((status) => {
-        console.log('📡 Realtime subscription status:', status);
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Successfully subscribed to channel');
-        } else if (status === 'CHANNEL_ERROR') {
-          console.error('❌ Channel error');
-        }
-      });
+      .subscribe();
 
     channelRef.current = channel;
 
     return () => {
-      console.log('🔌 Unsubscribing from channel');
       supabase.removeChannel(channel);
     };
   }, [sessionCode, wordSet, localPlayerNumber]);
@@ -193,10 +171,8 @@ export function useMultiplayerGameState(
         .eq('id', sessionIdRef.current);
 
       if (error) throw error;
-
-      console.log('✅ Updated remote state:', updateData);
     } catch (err) {
-      console.error('❌ Failed to update remote state:', err);
+      console.error('Failed to update remote state:', err);
       isUpdatingRef.current = false;
     }
   }, [wordSet]);

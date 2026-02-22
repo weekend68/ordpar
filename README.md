@@ -1,83 +1,57 @@
-# Ordpar - Kooperativt Ordspel
+# Ordspel
 
-Ett svenskt kooperativt ordspel där två spelare tillsammans försöker hitta fyra grupper med fyra ord vardera från en pool av 16 ord. Spelet använder AI (Claude) för att generera nya ordgrupper.
+En svensk, kooperativ ordgissningslek för två spelare – inspirerad av
+NY Times Connections och DN:s "Dagens fyra".
 
-## Teknisk Stack
+## Om spelet
 
-- **Frontend:** React + Vite + TypeScript + Tailwind CSS
-- **Backend:** Node.js + Express + TypeScript
-- **Databas:** PostgreSQL (Supabase)
-- **AI:** Anthropic Claude API (Sonnet 4)
-- **Hosting:** Vercel
+16 ord visas på skärmen, uppdelade i 4 hemliga grupper om 4 ord vardera.
+Spelarna turas om att välja ord – när 4 ord är markerade kan de gissa om
+det är en grupp. Rätt: gruppen klarmarkeras. Fel: orden skakar och turen
+byter spelare. Målet är att hitta alla fyra grupper tillsammans.
 
-## Spelmekanik
+## Status & ordmaterial
 
-- 16 ord totalt, uppdelade i 4 grupper om 4 ord
-- Alla 16 ord visas från start
-- Spelarna turas om att klicka på individuella ord
-- När 4 ord är valda kan spelarna gissa, passa eller rensa
-- Rätt gissning: gruppen flyttas upp och markeras som klar
-- Fel gissning: shake-animation
-- Vinner när alla 4 grupper hittats
+- Spelet använder för tillfället ordgrupper lånade från Dagens Nyheter (DN)
+  enbart i **testsyfte**. Dessa måste bytas ut innan ett eventuellt riktigt
+  lansering.
+- Koden innehåller ett färdigt AI-genereringssystem (Claude) avsett att
+  ersätta det statiska ordmaterialet – men det är inte aktivt just nu.
+  Se `api/_lib/services/ai/` för implementationen.
 
-## Lokal Development
+## Teknisk stack
 
-### Frontend
+| Del | Teknik |
+|-----|--------|
+| Frontend | React + Vite + TypeScript + Tailwind CSS |
+| API | Vercel Serverless Functions (TypeScript) |
+| Databas & realtid | Supabase (PostgreSQL + Realtime) |
+| Hosting | Vercel |
+
+## Lokal utveckling
+
+### Förutsättningar
+
+- Node.js 18+
+- Ett Supabase-projekt med korrekt schema (se `backend/supabase/migrations/`)
+- Vercel CLI (`npm i -g vercel`) för att köra API-funktionerna lokalt
+
+### Starta
+
 ```bash
 npm install
-npm run dev
-```
-Frontend körs på http://localhost:5173
-
-### Backend
-```bash
-cd backend
-npm install
-npm run dev
-```
-Backend körs på http://localhost:3001
-
-### Environment Variables
-
-Backend kräver `.env` fil:
-```bash
-PORT=3001
-SUPABASE_URL=your_supabase_url
-SUPABASE_SERVICE_KEY=your_service_key
-ANTHROPIC_API_KEY=your_api_key
+vercel dev
 ```
 
-## Deployment
+`vercel dev` startar både frontend (port 5173) och API-funktionerna under `/api`.
 
-### Vercel (Frontend + Backend)
-1. Pusha till GitHub
-2. Importera projektet i Vercel
-3. Sätt environment variables
-4. Deploy
+### Environment variables
 
-## Databasschema
-
-Se `backend/supabase/migrations/001_initial_schema.sql` för fullständigt schema.
-
-Huvudtabeller:
-- `users` - Spelare
-- `pairs` - Spelpar
-- `games` - Spelhistorik
-- `word_sets` - AI-genererade ordset
-- `bad_groups` - Negativ träningsdata för AI
-
-## API Endpoints
+Skapa en `.env.local`-fil i projektroten:
 
 ```
-POST /api/wordsets/generate       → Generera nytt ordset
-POST /api/pairs/create            → Skapa spelpar
-POST /api/games/create            → Starta nytt spel
-POST /api/games/:id/move          → Uppdatera moves
-POST /api/games/:id/complete      → Avsluta spel
-POST /api/games/:id/feedback      → Spara feedback
-GET  /api/games/pair/:pairId      → Hämta parets historik
+VITE_SUPABASE_URL=din_supabase_url
+VITE_SUPABASE_ANON_KEY=din_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=din_service_role_key
+ANTHROPIC_API_KEY=din_api_key   # Krävs bara om AI-generering aktiveras
 ```
-
-## License
-
-MIT

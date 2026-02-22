@@ -48,8 +48,6 @@ export function GameLobby() {
 
       if (sessionError) throw sessionError;
 
-      console.log('✅ Created game session:', session);
-
       // Show the code to the user
       setCreatedCode(sessionCode);
       setMode('create');
@@ -104,8 +102,6 @@ export function GameLobby() {
         .eq('session_code', upperCode);
 
       if (updateError) throw updateError;
-
-      console.log('✅ Joined game session:', session);
 
       // 3. Navigate to game
       navigate(`/game/${upperCode}?player=2`);
@@ -200,8 +196,8 @@ export function GameLobby() {
                         text: `Joina mitt Ordspel med kod: ${createdCode}`,
                         url: shareUrl,
                       });
-                    } catch (err) {
-                      console.log('Share cancelled');
+                    } catch (_err) {
+                      // Share cancelled
                     }
                   } else {
                     // Fallback: kopiera länk

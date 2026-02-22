@@ -27,7 +27,6 @@ export async function generateWordSet(
   request: GenerateWordSetRequest = {}
 ): Promise<{ id: string; groups: WordGroup[]; source?: 'gemini' | 'dn' | 'claude' | null }> {
   const url = `${API_URL}/wordsets/generate`;
-  console.log('🌐 Fetching from:', url);
 
   try {
     const response = await fetch(url, {
@@ -37,8 +36,6 @@ export async function generateWordSet(
       },
       body: JSON.stringify(request),
     });
-
-    console.log('📡 Response status:', response.status, response.statusText);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -91,8 +88,6 @@ export async function submitFeedback(
     ratings: ratingsArray,
   };
 
-  console.log('📤 Submitting feedback:', request);
-
   const response = await fetch(`${API_URL}/feedback/submit`, {
     method: 'POST',
     headers: {
@@ -111,5 +106,4 @@ export async function submitFeedback(
     throw new Error(data.error || 'Failed to submit feedback');
   }
 
-  console.log('✅ Feedback submitted successfully');
 }

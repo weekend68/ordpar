@@ -20,7 +20,6 @@ function App() {
     setError(null);
 
     try {
-      console.log('🎲 Requesting new word set from backend...');
       const { id, groups, source: wordSetSource } = await generateWordSet({});
 
       const newWordSet: WordSet = {
@@ -28,11 +27,9 @@ function App() {
         groups,
       };
 
-      console.log('✅ Received word set:', newWordSet);
       setWordSet(newWordSet);
       setSource(wordSetSource || null);
     } catch (err) {
-      console.error('❌ Failed to load word set:', err);
       setError(err instanceof Error ? err.message : 'Failed to load word set');
     } finally {
       setIsLoading(false);

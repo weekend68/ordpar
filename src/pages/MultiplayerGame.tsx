@@ -52,7 +52,6 @@ export function MultiplayerGame() {
           .single();
 
         if (wordSetError) {
-          console.error('Word set error:', wordSetError);
           throw new Error(`Word set not found: ${wordSetError.message}`);
         }
 
@@ -68,7 +67,6 @@ export function MultiplayerGame() {
         });
         setSource(wordSetData.source || null);
       } catch (err) {
-        console.error('Failed to load game:', err);
         if (mounted) {
           setError(err instanceof Error ? err.message : 'Failed to load game');
         }

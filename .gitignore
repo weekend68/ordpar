@@ -30,3 +30,7 @@ backend/.env
 # Claude
 .claude
 .vercel
+
+# DN-data (upphovsrättsskyddat, seedat till Supabase)
+dn-ratings.json
+Underlag/
