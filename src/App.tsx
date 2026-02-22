@@ -97,6 +97,7 @@ function App() {
           groups={state.groups}
           completedGroups={state.completedGroups}
           onPlayAgain={handleBackToLobby}
+          isMultiplayer={false}
         />
       )}
     </div>

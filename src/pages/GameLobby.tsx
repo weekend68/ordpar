@@ -10,6 +10,7 @@ export function GameLobby() {
   const [error, setError] = useState<string | null>(null);
   const [joinCode, setJoinCode] = useState('');
   const [createdCode, setCreatedCode] = useState<string | null>(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleCreateGame = async () => {
     setIsLoading(true);
@@ -153,8 +154,27 @@ export function GameLobby() {
                 disabled={isLoading}
                 className="w-full bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 text-white font-bold py-4 px-6 rounded-lg transition-colors text-lg"
               >
-                Enspelare (lokalt)
+                Enspelare
               </button>
+            </div>
+
+            <div className="mt-4">
+              <button
+                onClick={() => setShowHelp((v) => !v)}
+                className="flex items-center gap-2 text-gray-400 hover:text-gray-200 text-sm transition-colors"
+              >
+                <span className={`transition-transform ${showHelp ? 'rotate-90' : ''}`}>▸</span>
+                Hur funkar spelet?
+              </button>
+              {showHelp && (
+                <div className="mt-3 p-4 bg-gray-800 rounded-xl text-sm text-gray-300 space-y-2">
+                  <p>16 ord visas på skärmen, uppdelade i 4 hemliga grupper om 4 ord.</p>
+                  <p>Välj ord ett i taget – turen byter spelare efter varje klick (i multiplayer).</p>
+                  <p>När 4 ord är valda: tryck "Gissa!" för att se om de hör ihop.</p>
+                  <p>Rätt → gruppen klarmarkeras. Fel → orden skakar och turen byter.</p>
+                  <p>Vinner när alla 4 grupper hittats.</p>
+                </div>
+              )}
             </div>
 
             {error && (

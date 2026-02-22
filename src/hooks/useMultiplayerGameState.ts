@@ -41,6 +41,7 @@ export function useMultiplayerGameState(
 ) {
   const [state, setState] = useState<MultiplayerGameState | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [rematchSessionCode, setRematchSessionCode] = useState<string | null>(null);
   const channelRef = useRef<RealtimeChannel | null>(null);
   const isUpdatingRef = useRef(false);
   const sessionIdRef = useRef<string | null>(null);
@@ -59,7 +60,12 @@ export function useMultiplayerGameState(
         if (!data) throw new Error('Session not found');
 
         sessionIdRef.current = data.id;
-        setState(initMultiplayerGame(wordSet, data.id, sessionCode, localPlayerNumber, data));
+        setState((prev) => {
+          const newState = initMultiplayerGame(wordSet, data.id, sessionCode, localPlayerNumber, data);
+          // Preserve opponentConnected if already established (prevents race condition reset)
+          if (prev?.opponentConnected) newState.opponentConnected = true;
+          return newState;
+        });
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load session');
       }
@@ -103,12 +109,17 @@ export function useMultiplayerGameState(
                 .map(idx => wordSet.groups[idx])
                 .filter(g => g !== undefined), // Filter out invalid indices
               isMyTurn: newIsMyTurn,
-              opponentConnected: session.status === 'playing' || session.status === 'completed',
+              opponentConnected: true, // receiving any realtime event = opponent is here
               status: session.status === 'completed' ? 'won' : 'playing',
               winner: session.winner,
               lastActivity: new Date(session.last_activity),
             };
           });
+
+          // Check for rematch
+          if (session.rematch_session_code) {
+            setRematchSessionCode(session.rematch_session_code);
+          }
 
           // Reset updating flag after a delay
           setTimeout(() => {
@@ -398,6 +409,7 @@ export function useMultiplayerGameState(
   return {
     state,
     error,
+    rematchSessionCode,
     toggleWordSelection,
     guessGroup,
     passTurn,

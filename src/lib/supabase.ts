@@ -40,4 +40,5 @@ export interface GameSession {
   last_activity: string;
   winner: 1 | 2 | null;
   total_moves: number;
+  rematch_session_code: string | null;
 }

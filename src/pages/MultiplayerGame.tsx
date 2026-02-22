@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { generateWordSet } from '../services/api';
 import { useMultiplayerGameState } from '../hooks/useMultiplayerGameState';
 import { GameBoard } from '../components/GameBoard';
 import { GameResult } from '../components/GameResult';
@@ -84,22 +85,69 @@ export function MultiplayerGame() {
     };
   }, [sessionCode]);
 
+  const emptyWordSet = useMemo(() => ({ id: '', groups: [] }), []);
+
   // Initialize multiplayer game state
-  const { state, error: gameError, toggleWordSelection, guessGroup, clearSelection, giveUp } =
+  const { state, error: gameError, rematchSessionCode, toggleWordSelection, guessGroup, clearSelection, giveUp } =
     useMultiplayerGameState(
       sessionCode || '',
-      wordSet || { id: '', groups: [] },
+      wordSet ?? emptyWordSet,
       localPlayerNumber
     );
-
-  // No longer needed - Realtime should handle this
 
   const handleBackToLobby = useCallback(() => {
     navigate('/');
   }, [navigate]);
 
-  // Check for disconnect (last activity > 2 minutes ago)
-  // Opponent is connected if status is 'playing' or 'completed'
+  const isCreatingRematch = useRef(false);
+
+  const handlePlayAgain = useCallback(async () => {
+    if (!sessionCode || isCreatingRematch.current) return;
+    isCreatingRematch.current = true;
+
+    try {
+      // 1. Generate new word set
+      const { id: wordSetId, groups } = await generateWordSet({});
+
+      // 2. Generate new session code
+      const { data: codeData, error: codeError } = await supabase.rpc('generate_session_code');
+      if (codeError) throw codeError;
+      const newCode = codeData as string;
+
+      // 3. Shuffle words
+      const allWords = groups.flatMap(g => g.words);
+      for (let i = allWords.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
+      }
+
+      // 4. Create new session
+      const { error: sessionError } = await supabase
+        .from('game_sessions')
+        .insert({
+          session_code: newCode,
+          word_set_id: wordSetId,
+          shuffled_words: allWords,
+          status: 'playing',
+          current_player: 1,
+          started_at: new Date().toISOString(),
+        });
+      if (sessionError) throw sessionError;
+
+      // 5. Set rematch code on old session so player 2 gets notified
+      await supabase
+        .from('game_sessions')
+        .update({ rematch_session_code: newCode })
+        .eq('session_code', sessionCode);
+
+      // 6. Navigate to new session as player 1
+      navigate(`/game/${newCode}?player=1`);
+    } catch (err) {
+      console.error('Failed to create rematch:', err);
+      isCreatingRematch.current = false;
+    }
+  }, [sessionCode, navigate]);
+
   const isOpponentConnected = state && (state.status === 'won' || state.opponentConnected);
 
   if (isLoading) {
@@ -197,8 +245,23 @@ export function MultiplayerGame() {
           status={state.status}
           groups={wordSet.groups}
           completedGroups={state.completedGroups}
-          onPlayAgain={handleBackToLobby}
+          onPlayAgain={localPlayerNumber === 1 ? handlePlayAgain : handleBackToLobby}
+          isMultiplayer={true}
+          playAgainLabel={localPlayerNumber === 1 ? 'Spela igen' : 'Tillbaka till startsidan'}
         />
+      )}
+
+      {/* Rematch banner for player 2 */}
+      {rematchSessionCode && localPlayerNumber === 2 && (state.status === 'won' || state.status === 'given_up') && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-blue-600 text-white rounded-2xl px-6 py-4 shadow-2xl flex items-center gap-4">
+          <span className="font-semibold">Motspelaren vill spela igen!</span>
+          <button
+            onClick={() => navigate(`/game/${rematchSessionCode}?player=2`)}
+            className="bg-white text-blue-600 font-bold px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors"
+          >
+            Joina!
+          </button>
+        </div>
       )}
     </div>
   );

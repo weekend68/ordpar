@@ -5,6 +5,8 @@ interface GameResultProps {
   groups: WordGroup[];
   completedGroups: WordGroup[];
   onPlayAgain: () => void;
+  isMultiplayer: boolean;
+  playAgainLabel?: string;
 }
 
 export function GameResult({
@@ -12,6 +14,8 @@ export function GameResult({
   groups,
   completedGroups,
   onPlayAgain,
+  isMultiplayer,
+  playAgainLabel = 'Tillbaka till startsidan',
 }: GameResultProps) {
   const isWon = status === 'won';
 
@@ -23,7 +27,9 @@ export function GameResult({
             <div className="text-6xl mb-4">🎉</div>
             <h2 className="text-3xl font-bold text-green-500 mb-2">Grattis!</h2>
             <p className="text-lg text-gray-300 mb-4">
-              Ni hittade alla {groups.length} grupper tillsammans!
+              {isMultiplayer
+                ? `Ni hittade alla ${groups.length} grupper tillsammans!`
+                : `Du hittade alla ${groups.length} grupper!`}
             </p>
           </>
         ) : (
@@ -31,7 +37,7 @@ export function GameResult({
             <div className="text-6xl mb-4">😔</div>
             <h2 className="text-3xl font-bold text-white mb-2">Tyvärr!</h2>
             <p className="text-lg text-gray-400 mb-4">
-              Ni gav upp. Här är facit:
+              {isMultiplayer ? 'Ni gav upp. Här är facit:' : 'Du gav upp. Här är facit:'}
             </p>
           </>
         )}
@@ -64,7 +70,7 @@ export function GameResult({
           onClick={onPlayAgain}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors"
         >
-          Tillbaka till startsidan
+          {playAgainLabel}
         </button>
       </div>
     </div>
